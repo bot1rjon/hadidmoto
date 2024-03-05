@@ -1,0 +1,344 @@
+{% load static %}
+<!doctype html>
+<html lang="en" class=" edit-theme">
+  <script>
+    let edit_theme = document.querySelector(".edit-theme")
+    edit_theme.classList.add(localStorage.getItem("theme"))
+  </script>
+  <style>
+    #loader{
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      z-index: 200;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #FDB819;
+    }
+    .lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    }
+    .lds-ripple div {
+    position: absolute;
+    border: 4px solid #fff;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    .lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+    }
+    @keyframes lds-ripple {
+    0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+    }
+    }
+    </style>
+    <script>
+      document.onreadystatechange = () => {
+        if (document.readyState === "complete"){
+          document.querySelector("#loader").style.display = 'none';
+          document.querySelector("#root").style.display = 'block';
+        }
+      }
+    </script>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- loader-->
+	  <link href="{% static 'control/assets/css/pace.min.css' %}" rel="stylesheet" />
+	  <script src="{% static 'control/assets/js/pace.min.js' %}"></script>
+
+    <!--plugins-->
+    <link href="{% static 'control/assets/plugins/simplebar/css/simplebar.css' %}" rel="stylesheet" />
+    <link href="{% static 'control/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet" />
+    <link href="{% static 'control/assets/plugins/metismenu/css/metisMenu.min.css' %}" rel="stylesheet" />
+
+    <!-- CSS Files -->
+    <link href="{% static 'control/assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'control/assets/css/bootstrap-extended.css' %}" rel="stylesheet">
+    <link href="{% static 'control/assets/css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'control/assets/css/icons.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!--Theme Styles-->
+    <link href="{% static 'control/assets/css/dark-theme.css' %}" rel="stylesheet" />
+    <link href="{% static 'control/assets/css/semi-dark.css' %}" rel="stylesheet" />
+    <link href="{% static 'control/assets/css/header-colors.css' %}" rel="stylesheet" />
+
+    <script src="{% static 'control/assets/js/jquery.min.js' %}"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor5/31.1.0/ckeditor.min.js" 
+    integrity="sha512-A2+2JT5Hd8WgdCcY0kx5vxi+W6c+e3gv0M1rYpJ1uaYBofZ+izmDSEQLTRctRcRfxA+iGE+MhCjdFMFDYubFQw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    
+    
+    <style>
+      div.col-sm-12.col-md-6 {
+        margin-bottom: 10px;
+      }
+      div.col-sm-12.col-md-6 #example_filter {
+        text-align: right;
+      }
+    </style>
+    <style>
+      .ck-editor__editable_inline { 
+        min-height: 200px; 
+        width: 100%;
+        }
+    </style>
+    <script>
+      function getToken(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          var cookies = document.cookie.split(";");
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+  
+      var csrftoken = getToken("csrftoken");
+    </script>
+
+    <title>HADID MOTO | Boshqarish</title>
+    <style>
+      .table-responsive {
+        overflow-x: hidden; 
+      }
+    </style>
+  </head>
+
+
+  <body>
+    
+    <div id="loader">
+      <div class="lds-ripple"><div></div><div></div></div>
+    </div>
+ <!--start wrapper-->
+    <div class="wrapper" id="root">
+       
+       <!--start sidebar -->
+       <aside class="sidebar-wrapper" data-simplebar="true">
+        <div class="sidebar-header">
+          
+          <div>
+            <h2 class="logo-text">HADID MOTO</h2>
+          </div>
+          <div class="toggle-icon ms-auto"><ion-icon name="menu-sharp"></ion-icon>
+          </div>
+        </div>
+        <!--navigation-->
+
+        <ul class="metismenu" id="menu">
+
+          <li>
+            <a href="{% url 'control_index' %}">
+              <div class="parent-icon"><ion-icon name="home-sharp"></ion-icon>
+              </div>
+              <div class="menu-title">Bosh sahifa</div>
+            </a>
+          </li>
+
+          <li>
+            <a class="has-arrow" href="javascript:;">
+              <div class="parent-icon"><ion-icon name="newspaper-outline"></ion-icon>
+              </div>
+              <div class="menu-title">Viloyatlar va Shaharlar</div>
+            </a>
+            <ul>
+              <li> <a href="{% url 'control_regions_all' %}"><ion-icon name="copy-sharp"></ion-icon>Viloyatlar</a>
+              </li>
+              <li> <a href="{% url 'control_districts_all' %}"><ion-icon name="copy-sharp"></ion-icon>Shaharlar</a>
+              </li> 
+            </ul>
+          </li>
+
+          <li>
+            <a href="{% url 'control_footsliders_all' %}">
+              <div class="parent-icon"><ion-icon name="copy-sharp"></ion-icon>
+              </div>
+              <div class="menu-title">Pastgi Sliderlar</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'control_masters_all' %}">
+              <div class="parent-icon"><ion-icon name="copy-sharp"></ion-icon>
+              </div>
+              <div class="menu-title">Ustalar</div>
+            </a>
+          </li>
+   
+          <li>
+            <a href="#logout" data-bs-toggle='modal'class="text-danger">
+              <div class="parent-icon"><ion-icon name="exit-outline" aria-label="copy sharp" role="img" class="md hydrated"></ion-icon>
+              </div>
+              <div class="menu-title">Chiqish</div>
+            </a>
+          </li>
+
+        </ul>
+        <!--end navigation-->
+     </aside>
+     <!--end sidebar -->
+
+        <!--start top header-->
+          <header class="top-header">
+            <nav class="navbar navbar-expand gap-3">
+              <div class="mobile-menu-button"><ion-icon name="menu-sharp"></ion-icon></div>
+
+                  <h3 class="mt-2 admin-clock">---</h3>
+                  
+             
+             <div class="top-navbar-right ms-auto">
+
+              <ul class="navbar-nav align-items-center">
+                <li class="nav-item mobile-search-button">
+                  <a class="nav-link" href="javascript:;">
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link dark-mode-icon" href="javascript:;">
+                    <div class="mode-icon">
+                      <ion-icon name="moon-sharp"></ion-icon> 
+                    </div>
+                  </a>
+                </li>
+                
+               </ul>
+
+              </div>
+            </nav>
+          </header>
+        <!--end top header-->
+
+
+        <!-- start page content wrapper-->
+        <div class="page-content-wrapper">
+          <!-- start page content-->
+         <div class="page-content">
+
+          <!--start breadcrumb-->
+          <div class="page-breadcrumb d-flex align-items-center mb-3">
+            <div class="breadcrumb-title pe-3 d-none d-sm-block">{% block page_title %}{% endblock page_title %}</div>
+            {% block add %}
+            {% endblock add %}
+          </div>
+          <!--end breadcrumb-->
+          <hr/>
+          {% block content %}
+          {% endblock content %}
+          </div>
+          <!-- end page content-->
+         </div>
+         <!--end page content wrapper-->
+        <!--start footer-->
+        
+          <!--end footer-->
+
+
+        <!--Start Back To Top Button-->
+		     <a href="javaScript:;" class="back-to-top"><ion-icon name="arrow-up-outline"></ion-icon></a>
+         <!--End Back To Top Button-->
+  
+
+
+          <!--start overlay-->
+           <div class="overlay nav-toggle-icon"></div>
+          <!--end overlay-->
+
+     </div>
+  <!--end wrapper-->
+     
+  <script>
+    let theme = document.querySelector(".edit-theme")
+    theme.addEventListener("click", ()=>{
+      localStorage.setItem("theme",theme.classList.value);
+    })
+  </script>
+
+
+<div class="col">
+  <!-- Modal -->
+  <div class="modal fade" id="logout" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><b>Выход</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h4>Вы точно хотите выйти ? </h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отмена</button>
+              <a href="{% url 'control_log_out' %}" class="btn btn-outline-danger">Выход</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- JS Files-->
+    <script src="{% static 'control/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'control/assets/plugins/simplebar/js/simplebar.min.js' %}"></script>
+    <script src="{% static 'control/assets/plugins/metismenu/js/metisMenu.min.js' %}"></script>
+    <script src="{% static 'control/assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script type="module" src="https://unpkg.com/ionicons@6.0.0/dist/ionicons/ionicons.esm.js"></script>
+    <!--plugins-->
+    <!-- Main JS-->
+
+    <script src="{% static 'control/assets/js/main.js' %}"></script>
+     <!-- Contents -->
+  <script>
+    var span = document.querySelector('.admin-clock');
+
+    function time() {
+      var d = new Date();
+      var s = d.getSeconds();
+      var m = d.getMinutes();
+      var h = d.getHours();
+      span.innerText = 
+        ("0" + h).substr(-2) + ":" + ("0" + m).substr(-2) + ":" + ("0" + s).substr(-2);
+    }
+    
+    setInterval(time, 1000);
+  </script>
+     {% block js_content %}
+     {% endblock js_content %}
+  </body>
+</html>

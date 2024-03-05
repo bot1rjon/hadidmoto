@@ -1,0 +1,117 @@
+{% load static %} 
+
+<!doctype html>
+<html lang="ru" class="light-theme">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  <!-- loader-->
+    <link href="{% static 'control/assets/css/pace.min.css' %}" rel="stylesheet" />
+    <script src="{% static 'control/assets/js/pace.min.js' %}"></script>
+    <link rel="shortcut icon" type="image/png" href="{% static 'control/assets/images/title.png' %}"/>
+
+  <!--plugins-->
+  <link href="{% static 'control/assets/plugins/simplebar/css/simplebar.css' %}" rel="stylesheet" />
+  <link href="{% static 'control/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}" rel="stylesheet" />
+  <link href="{% static 'control/assets/plugins/metismenu/css/metisMenu.min.css' %}" rel="stylesheet" />
+
+  <!-- CSS Files -->
+  <link href="{% static 'control/assets/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'control/assets/css/bootstrap-extended.css' %}" rel="stylesheet">
+  <link href="{% static 'control/assets/css/style.css' %}" rel="stylesheet">
+  <link href="{% static 'control/assets/css/icons.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <!--Theme Styles-->
+  <link href="{% static 'control/assets/css/dark-theme.css' %}" rel="stylesheet" />
+  <link href="{% static 'control/assets/css/semi-dark.css' %}" rel="stylesheet" />
+  <link href="{% static 'control/assets/css/header-colors.css' %}" rel="stylesheet" />
+
+  <title>Кириш | Hadid Moto</title>
+</head>
+
+<body>
+
+  <!--start wrapper-->
+  <div class="wrapper">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-4 col-lg-5 col-md-7 mx-auto mt-5 pt-5">
+          <div class="card radius-10">
+            <div class="card-body p-4">
+                {% if base.code == "error" %}
+                <div class="alert alert-dismissible fade show py-2 bg-danger">
+                  <div class="d-flex align-items-center">
+                    <div class="ms-3">
+                      <div class="text-white text-center">
+                         <small>Фойдаланувчи номи ёки пароль мос келмади</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+              <div class="text-center">
+                <h4>Кириш</h4>
+              </div>
+              <form class="form-body row g-3" method="POST" action="{% url 'control_sign_in' %}">
+                  {% csrf_token %}
+                <div class="col-12">
+                  <label for="inputEmail" class="form-label">Фойдаланувчи номи</label>
+                  <input type="text" name="username" required class="form-control" id="inputEmail">
+                </div>
+                <div class="col-12">
+                  <label for="inputPassword" class="form-label">Парол</label>
+                  <input type="password" required name="password" class="form-control" id="inputPassword">
+                </div>
+                <div class="col-12 col-lg-6">
+                </div>
+                <!-- <div class="col-12 col-lg-6 text-end">
+                  <a href="#.">Забыли пароль ?</a>
+                </div> -->
+                <div class="col-12 col-lg-12">
+                  <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Кириш</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="my-5">
+      <div class="container">
+        <div class="d-flex align-items-center gap-4 fs-5 justify-content-center social-login-footer">
+          <a href="javascript:;">
+            <ion-icon name="logo-twitter"></ion-icon>
+          </a>
+          <a href="javascript:;">
+            <ion-icon name="logo-linkedin"></ion-icon>
+          </a>
+          <a href="javascript:;">
+            <ion-icon name="logo-github"></ion-icon>
+          </a>
+          <a href="javascript:;">
+            <ion-icon name="logo-facebook"></ion-icon>
+          </a>
+          <a href="javascript:;">
+            <ion-icon name="logo-pinterest"></ion-icon>
+          </a>
+        </div>
+        <div class="text-center">
+          <p class="my-4">All Rights Reserved hadid.moto <script>new Date().getFullYear()>document.write(new Date().getFullYear());</script>  - created by akhmadjonovkomron@gmail.com  </p>
+        </div>
+        <!-- Akhmadjonov Komronbek -->
+        <!-- Dadajonov Boburjon -->
+        <!-- Akhmadjonov Botirjon -->
+      </div>
+    </footer>
+  </div>
+  <!--end wrapper-->
+
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+{% extends 'control/base.html' %}
+{% load static %}
+
+
+    {% block page_title %}Shaharni O'zgartirish{% endblock page_title %}
+
+    {% block add %}
+    <div class="ms-auto d-block">
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleDangerModal">O'chirish</button>
+      </div>
+    </div>
+    {% endblock add %}
+
+    {% block content %}
+    <div class="card">
+        <div class="card-body">
+          <div class="p-4 border rounded">
+            <form class="row g-3 needs-validation" action="{% url 'control_district_edit' %}" enctype="multipart/form-data" method="POST" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ district.id }}">
+                <div class="col-md-12">
+                  <label for="validationCustomUsername" class="form-label">Viloyat</label>
+                  <div class="input-group has-validation"> 
+                  <select class="form-select" required name="region_id" aria-label="Default select example" id="validationCustom00">
+                    {% for region in regions %}
+                      {% if district.region.id == region.id %}
+                        <option value="{{region.id}}" selected>{{ region.title }}</option>
+                      {% else %}
+                        <option value="{{region.id}}">{{ region.title }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                  <div class="invalid-feedback">Iltimos, Viloyatni tanlang</div>
+                  </div>
+                </div>
+              <div class="col-md-12">
+                <label for="validationCustom01" class="form-label">Shahar Nomi</label>
+                <input type="text" name="title" class="form-control" id="validationCustom01" value="{{ district.title }}" required>
+                <div class="invalid-feedback">Iltimos, viloyat nomini kiriting</div>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-primary" type="submit">O'zgartirish</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endblock content %}
+
+
+
+{% block js_content %}
+<div class="col">
+  <!-- Modal -->
+  <div class="modal fade" id="exampleDangerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger"><b>Diqqat</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-danger">
+          <p>Shaharni O'chirmoqchisz ishonchingz komilmi !!!</p>
+          <input type="checkbox" id="checker1"> <label for="checker1">OK</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Yopish</button>
+          <form action="{% url 'control_district_delete' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{district.id}}">
+              <button type="submit" class="btn btn-outline-danger delete" disabled>O'chirish</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script>
+    (function () {
+      'use strict'
+
+      var forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+
+<script>
+    let check = document.querySelector('#checker1')
+    check.addEventListener('change' ,  ()=> {
+    let remove = document.querySelector('.modal-footer .delete')
+    
+    if (check.checked) {
+    remove.removeAttribute('disabled')
+    } else {
+    remove.setAttribute('disabled', 'true')
+    }
+    })
+</script>
+
+<script>
+    setInterval(myTimer, 1000);
+    function myTimer() {
+        const d = new Date();
+        let cc = document.querySelectorAll('.alert_nums');
+        cc.forEach(element => {
+            element.innerHTML -= 1
+        })
+    }
+    setInterval(()=> $(".alert").alert('close'), 6000)
+  </script>
+{% endblock js_content %}
