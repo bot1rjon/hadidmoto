@@ -2,7 +2,6 @@
 {% load static %}
 
 
-
     {% block page_title %} Viloyat Yaratish {% endblock page_title %}
     {% block content %}
     <div class="card">
@@ -11,9 +10,16 @@
             <form class="row g-3 needs-validation" action="{% url 'control_region_create' %}" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
               <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Viloyat Nomi</label>
-                <input type="text" name="title" class="form-control" id="validationCustom01" required>
-                <div class="invalid-feedback">Iltimos, viloyat nomini kiriting</div>
+                <label for="validationCustomUsername" class="form-label">Viloyat Tanlang</label>
+                <div class="input-group has-validation"> 
+                <select class="form-select" name="title" required aria-label="Default select example" id="validationCustom00">
+                  
+                  {% for region in regions %}
+                    <option value="{{ region }}">{{ region }}</option>
+                  {% endfor %}
+                </select>
+                  <div class="invalid-feedback">Iltimos, Viloyat tanlang</div>
+                </div>
               </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">Yaratish</button>

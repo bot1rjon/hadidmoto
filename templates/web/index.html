@@ -1,0 +1,115 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- SHowcase ########################################################################### -->
+    <div id="showcase">
+        <div class="showcase-block">
+            <div class="container-fluid">
+                <div class="showcase-wrapper">
+                    <div class="showcase-content-about owl-carousel owl-sliders owl-theme">
+                        {% for slider in sliders %}
+                        <div class="item">
+                            <div class="info">
+                                <h2 class="title text-main mb-0">{{ slider.category.title }}</h2>
+                                <h2 class="title text-dark mb-0">{{ slider.subtitle }}</h2>
+                                <p class="text-dark">{{ slider.content }}</p>
+                                <a href="{% url 'web_category' slider.category.slug %}" class="detail-btn">Katalogni ko’rish</a>
+                            </div>
+                            <div class="info-img"><img src="{{ slider.image.url }}" class="img-fluid" alt=""></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="showcase-content-category">
+                        {% for slider_cat in slider_categories %}
+                        <div class="item-block">
+                            <div class="text-block">
+                                <div>
+                                    <h5 class="title text-main mb-0">{{ slider_cat.category.title }}</h5>
+                                    <h5 class="title text-dark mb-0">{{ slider_cat.subtitle }}</h5>
+                                </div>
+                                <img src="{{ slider_cat.image.url }}" alt="" class="item-img img-fluid sm-img">
+                                <a href="{% url 'web_category' slider_cat.category.slug %}" class="detail-btn">Batafsil</a>
+                            </div>
+                            <img src="{{ slider_cat.image.url }}" alt="" class="item-img img-fluid lg-img">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ ################################################################################ -->
+    <div id="faq">
+        <div class="faq-block">
+            <div class="container-fluid">
+                <div class="faq-wrapper">
+                    <div class="faq-info">
+                        <h4 class="title">Bozorda 30 yildan ortiq tajriba</h4>
+                        <p class="text text-dark">bizning kompaniyamiz skuter va mototsikl qismlari bo'yicha 30 yillik tajribaga ega.</p>
+                    </div>
+                    <div class="faq-content">
+                        <div class="faq-item">
+                            <div class="item-img"><img src="{% static 'web/assets/images/delivery.png' %}" alt="" class="img-fluid del-img"></div>
+                            <h5 class="title">Yetkazib berish</h5>
+                            <p class="text text-dark">Bizning tez va ishonchli yetkazib berishimiz buyurtmangizni o'zingiz uchun qulay va qisqa vaqt ichida olishingizga yordam beradi.</p>
+                        </div>
+                        <div class="faq-item">
+                            <div class="item-img"><img src="{% static 'web/assets/images/money.png' %}" alt="" class="img-fluid money-img" style="margin-top: -7px"></div>
+                            <h5 class="title">Qulay narx va assortiment</h5>
+                            <p class="text text-dark">Biz o'z assortimentimizni doimiy ravishda yangilab turamiz va qulay narxlarni taklif qilish uchun to'g'ridan-to'g'ri ishlab chiqaruvchilar bilan ishlaymiz</p>
+                        </div>                 
+                        <div class="faq-item">
+                            <div class="item-img"><img src="{% static 'web/assets/images/coin.png' %}" alt="" class="img-fluid coin-img"></div>
+                            <h5 class="title">Brendlar bilan ishlash</h5>
+                            <p class="text text-dark">Biz TEMP, MO BOSHI, KAPLAN, MIT kabi brendlar bilan hamkorlik qilamiz va sizga ulardan eng yangi qismlarni taklif qilamiz."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sell-product">
+        <div class="sell-product mb-2">
+            <div class="container-fluid">
+                <div class="sell-product-wrapper">
+                    <h2 class="title">Ko'p sotiladigon mahsulotlar</h2>
+                    <div class="sell-product-content row">
+                        {% for popular_cat in popular_categories %}
+                        <div class="item col-lg-4 col-6">
+                            <a href="{% url 'web_category' popular_cat.category.slug %}" class="bg-item">
+                                <img src="{{ popular_cat.image.url }}" alt="" class="img-fluid">
+                                <h3 class="title">{{ popular_cat.category.title | truncatechars:19 }}</h3>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="banner-img"><img src="/assets/images/banner.png" class="img-fluid" alt=""></div>
+                    <div class="nav-discount">
+                        <h2 class="title">Chegirmadagi mahsulotlar</h2>
+                        <a href="{% url 'web_products_disocunt' %}" class="all-link">Barchasi...</a>
+                    </div>
+                    <div class="sale-product-content owl-carousel owl-sale-products owl-theme">
+                        {% for discount_p in discount_products %}
+                        <div class="item">
+                            <div class="img-div">
+                                <img src="{{ discount_p.image_min.url }}" class="img-fluid" alt="">
+                            </div>
+                            <a href="{% url 'web_product' discount_p.slug %}" class="title">{{ discount_p.title | truncatechars:15  }}</a>
+                            <p class="text">{{ discount_p.subtitle | truncatechars:15  }}</p>
+                            <button class="sale-btn">Chegirma {{ discount_p.discount }}%</button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center">
+                        <a href="{% url 'web_products_disocunt' %}" class="btn btn-md discount-link-btn">Barchasi</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock content %}

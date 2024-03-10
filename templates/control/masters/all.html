@@ -52,7 +52,7 @@
                   <div class="table-responsive">
                       <table id="example" class="table table-striped table-bordered" style="width:100%">
                           <thead>
-                              <tr>
+                              <tr class="text-center">
                                   <th>Sarlavhasi</xth>
                                   <th>Viloyati</th>
                                   <th>Shahri</th>
@@ -61,7 +61,7 @@
                           </thead>
                           <tbody>
                               {% for master in masters %}
-                              <tr style="vertical-align: middle;">
+                              <tr style="vertical-align: middle; text-align: center;">
                                   <td>{{ master.title }}</td>
                                   <td>{{ master.region.title }}</td>
                                   <td>{{ master.district.title }}</td>
@@ -73,6 +73,11 @@
                   </div>
               </div>
           </div>
+          <style>
+            #example_wrapper .col-sm-12 {
+              overflow-y: auto;
+            }
+          </style>
     {% endblock content %}
     
 

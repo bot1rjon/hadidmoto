@@ -1,0 +1,587 @@
+{% extends 'control/base.html' %}
+{% load static %}
+
+
+      {% block page_title %}Mahsulot O'zgartirish{% endblock page_title %}
+      {% block add %}
+      <div class="ms-auto d-block">
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleDangerModal">O'chirish</button>
+        </div>
+      </div>
+      {% endblock add %}
+
+      {% block content %}
+        <div class="card">
+            <div class="card-body">
+              <div class="p-4 border rounded">
+                {% if base.code == "edited" %}
+                <div class="alert alert-dismissible fade show py-2 bg-warning d-flex justify-content-between">
+                  <div class="d-flex align-items-center">
+                    <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                    </div>
+                    <div class="ms-3">
+                      <div class="text-white">Mahsulot O'zgartirildi.</div>
+                    </div>
+                  </div>
+                  <h3 class="alert_nums text-light align-self-center mb-0">7</h3>
+                </div>
+                {% endif %}
+                <form class="row g-3 needs-validation" action="{% url 'control_product_edit' %}" method="POST" enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{product.id}}">
+
+                    <div class="col-md-12">
+                        <div class="mb-4 d-flex flex-column gap-3 align-items-center justify-content-between">
+                          <div class=" shadow text-center">
+                            <img src="{{ product.image_min.url }}" alt="..." style="object-fit: cover;" class="rounded" width="300">
+                          </div>
+                          </div>
+                                
+                          <label for="validationCustom01" class="form-label">Rasm 400x400</label>
+                          <div class="input-group has-validation mb-3">
+                            <input type="file" name="file" class="form-control has-validation" accept="image/png, image/jpeg" id="inputGroupFile02">
+                          </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="validationCustomUsername" class="form-label">Toifasi</label>
+                        <div class="input-group has-validation"> 
+                        <select class="form-select" id="category" required name="category_id" aria-label="Default select example" id="validationCustom00">
+                          {% for category in categories %}
+                            {% if product.category.id == category.id %}
+                              <option value="{{category.id}}" selected>{{ category.title }}</option>
+                            {% else %}
+                              <option value="{{category.id}}">{{ category.title }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Iltimos, toifa tanlang.</div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="validationCustom01" class="form-label">Nomi</label>
+                        <input type="text" name="title" class="form-control" value="{{ product.title }}" id="validationCustom01" required>
+                        <div class="invalid-feedback">Iltimos, nomini kiriting</div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="validationCustom01" class="form-label">Qo'shimcha Nomi</label>
+                        <input type="text" name="subtitle" class="form-control" value="{{ product.subtitle }}" id="validationCustom01" required>
+                        <div class="invalid-feedback">Iltimos, qo'shimcha nomini kiriting</div>
+                      </div>
+                      <div class="col-md-12">
+                        <label for="validationCustom01" class="form-label">Kompanyasi(BRAND)</label>
+                        <input type="text" name="company" value="{{ product.company }}" class="form-control" id="validationCustom01">
+                      </div>
+                      <div class="form-check-danger form-check form-switch">
+                        <input class="form-check-input" name="popular" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.popular %} checked="" {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckCheckedDanger">To'p Mahsulot</label>
+                      </div>
+                      <div class="form-check-danger form-check form-switch">
+                        <input class="form-check-input" name="is_active" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.is_active %} checked="" {% endif %}>
+                        <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Mavjud</label>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="validationCustomUsername" class="form-label">Narxi</label>
+                        <div class="input-group has-validation">
+                          <input type="number" name="price" value="{{ product.price }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                          <div class="invalid-feedback">Iltimos, narxini kiriting</div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="validationCustomUsername" class="form-label">Chegirma</label>
+                        <div class="input-group has-validation">
+                          <input type="number" name="discount" value="{{ product.discount }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend">
+                          <span class="input-group-text" id="inputGroupPrepend">%</span>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="validationCustomUsername" class="form-label">Eski Narxi</label>
+                        <div class="input-group has-validation">
+                          <input type="number" name="old_price" value="{{ product.old_price }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="validationCustomUsername" class="form-label">Prioritet</label>
+                        <div class="input-group has-validation"> <span class="input-group-text" id="inputGroupPrepend">№</span>
+                          <input type="number" name="priority" value="{{ product.priority }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                          <div class="invalid-feedback">Iltimos, priotitet kiriting</div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-12">
+                        <label for="validationCustomUsername" class="form-label">Tavsif</label>
+                          <textarea id="editor2" class="form-control" name="description">{{ product.description }}</textarea>
+                      </div>
+                      <div class="col-12">
+                        <button class="btn btn-primary" type="submit">O'zgartirish</button>
+                      </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card radius-10 w-100">
+                  <div class="card-body">
+                      {% if base.code == "p_image_add" %}
+                      <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                          <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                          </div>
+                          <div class="ms-3">
+                            <div class="text-white">Rasm qo'shildi
+                            </div>
+                          </div>
+                        </div>
+                        <h3 class="alert_nums text-light align-self-center">7</h3>
+                      </div>
+                      {% elif base.code == "p_image_removed" %}
+                      <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+                        <div class="d-flex align-items-center">
+                          <div class="fs-3 text-white"><ion-icon name="trash-sharp"></ion-icon>
+                          </div>
+                          <div class="ms-3">
+                            <div class="text-white">Rasm o'chirildi</div>
+                          </div>
+                        </div>
+                        <h3 class="alert_nums text-light align-self-center">7</h3>
+                      </div>
+                      {% endif %}
+                    <div class="d-flex align-items-center mb-3">
+                      <h3 class="mb-0">Qo'shimcha Rasm</h3>
+                      <div class="dropdown options ms-auto">
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#photo_upload">Yaratish</button>
+                      </div>
+                      <hr>
+                    </div>
+                    <div class="g-3 mt-2 align-items-center">
+                      <div class="row">
+                          {% for i in product.productimage_set.all %}
+                          <div class="col-sm-3 col-6 mb-3" style="position: relative;">
+                            <img class="img-fluid" src="{{ i.img_min.url }}" style="height: 180px; width: 100%; object-fit: cover; object-position: center;" alt="{{ i.img_min.url }}"> 
+                                <a href="{% url 'control_product_image_remove' product.id i.id %}" class="btn btn-danger" style="position: absolute; top:0; right: 0;">
+                                  <ion-icon name="trash-sharp" aria-label="trash sharp" role="img" class="md hydrated"></ion-icon>
+                                </a>
+                          </div>
+                          {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col">
+          <!-- Modal -->
+          <div class="modal fade" id="photo_upload" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title"><b>Rasm Yaratish</b></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'control_product_image_create' %}" method="POST" novalidate="" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <div class="modal-body">
+                  <div class="input-group has-validation mb-3">
+                    <input type="file"  name="file" class="form-control has-validation" accept="image/png, image/jpeg" required id="inputGroupFile02">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">Yopish</button>
+                      <input type="hidden" name="product_id" value="{{ product.id }}">
+                      <button type="submit" class="btn btn-outline-primary">Yaratish</button>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endblock content %}
+
+
+{% block js_content %}
+
+<div class="col">
+  <!-- Modal -->
+  <div class="modal fade" id="exampleDangerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-danger"><b>Diqqat!</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-danger">
+          <p>Mahsulotni O'chirmoqchisz, ishonchingz komilmi
+          </p>
+          <input type="checkbox" id="checker1"> <label for="checker1">OK</label>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Yopish</button>
+          <form action="{% url 'control_product_delete' %}" method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="id" value="{{product.id}}">
+              <button type="submit" class="btn btn-outline-danger delete" disabled>O'chirish</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col">
+  <!-- Modal -->
+  <div class="modal fade" id="category_add" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><b>Добавить новое категория</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert_box">
+          </div>
+          <div class="row g-3 needs-validation">
+          <div class="col-md-12">
+            <label for="validationCustom01" class="form-label">Название категория RU</label>
+            <input type="text" name="category_title_ru" class="form-control" id="validationCustom01" required>
+            <div class="invalid-feedback">Пожалуйста, введите название.</div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustom01" class="form-label">Название категория UZ</label>
+            <input type="text" name="category_title_uz" class="form-control" id="validationCustom01" required>
+            <div class="invalid-feedback">Пожалуйста, введите название.</div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustomUsername" class="form-label">Приоритет</label>
+            <div class="input-group has-validation"> <span class="input-group-text" id="inputGroupPrepend">№</span>
+              <input type="number" name="category_priority" value="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); if (this.value.length > 12) {this.value = 0}" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+              <div class="invalid-feedback">Пожалуйста, укажите приоритет.</div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отмена</button>
+            <button type="submit" class="btn btn-success category_add">Добавить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script src="{% static 'control/assets/plugins/input-tags/js/tagsinput.js' %}"></script>
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.fileupload.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js' %}"></script>
+<script src="{% static 'control/assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js' %}"></script>
+<script src="{% static 'control/assets/js/form-file-upload.js' %}"></script>
+
+
+<script>
+  let category_add = document.querySelector('.modal .category_add')
+
+  url_c = '/control/category_add/'
+  category_add.addEventListener('click', ()=>{
+    let category_title_uz = document.querySelector(".modal input[name='category_title_uz']");
+    let category_title_ru = document.querySelector(".modal input[name='category_title_ru']");
+    let category_priority = document.querySelector(".modal input[name='category_priority']");
+    if (category_title_ru.value != '' && category_title_uz.value != '' && category_priority.value != '' ){
+      fetch(url_c, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({
+            title_uz: category_title_uz.value,
+            title_ru: category_title_ru.value,
+            priority: category_priority.value
+        })
+        }).then(resp => resp.json()).then(
+          data => {
+            if (data.code == 200) {
+              let select_option = document.querySelectorAll('.category_select')
+              select_option[0].innerHTML += `<option value="${data.category.id}">${data.category.title_ru}</option>`
+              select_option[1].innerHTML += `<option value="${data.category.id}">${data.category.title_ru}</option>`
+              category_title_uz.value = ''
+              category_title_ru.value = ''
+              category_priority.value = 1
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">Категория добавлено</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+            else{
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="close-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">${data.error}</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+          }
+        )
+    } else {
+      console.log("Error");
+    }
+  })
+</script>
+
+<script>
+  let subcategory_add = document.querySelector('.modal .subcategory_add')
+
+  url = '/control/subcategory_add/'
+  subcategory_add.addEventListener('click', ()=>{
+    let subcategory_category = document.querySelector(".modal select[name='subcategory_category']");
+    let subcategory_title_uz = document.querySelector(".modal input[name='subcategory_title_uz']");
+    let subcategory_title_ru = document.querySelector(".modal input[name='subcategory_title_ru']");
+    let subcategory_priority = document.querySelector(".modal input[name='subcategory_priority']");
+    if (subcategory_title_ru.value != '' && subcategory_title_uz.value != '' && subcategory_priority.value != '' ){
+      fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({
+            category_id: subcategory_category.value, 
+            title_uz: subcategory_title_uz.value,
+            title_ru: subcategory_title_ru.value,
+            priority: subcategory_priority.value
+        })
+        }).then(resp => resp.json()).then(
+          data => {
+            if (data.code == 200) {
+              let select_option_subcategory = document.querySelector('.subcategory_select')
+              select_option_subcategory.innerHTML += `<option value="${data.subcategory.id}">${data.subcategory.title_ru}</option>`
+              subcategory_title_uz.value = ''
+              subcategory_title_ru.value = ''
+              subcategory_priority.value = 1
+              let alert_box = document.querySelector('.alert_box_subcategory')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">Подкатегория добавлено</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+            else{
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="close-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">${data.error}</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+          }
+        )
+    } else {
+      console.log("Error");
+    }
+  })
+
+
+</script>
+
+<script>
+  let discount_add = document.querySelector('.modal .discount_add')
+
+  url_discount = '/control/discount_add/'
+  discount_add.addEventListener('click', ()=>{
+    let discount_title= document.querySelector(".modal input[name='discount_title']");
+    let discount_unit = document.querySelector(".modal input[name='discount_unit']");
+    if (discount_title.value != '' && discount_unit.value != '' ){
+      fetch(url_discount, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({
+            title: discount_title.value,
+            unit: discount_unit.value,
+        })
+        }).then(resp => resp.json()).then(
+          data => {
+            if (data.code == 200) {
+              let select_option_subcategory = document.querySelector('.discount_select')
+              select_option_subcategory.innerHTML += `<option value="${data.discount.id}">${data.discount.title}</option>`
+              discount_title.value = ''
+              discount_unit.value = ''
+              let alert_box = document.querySelector('.alert_box_discount')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">Скидка добавлено</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+            else{
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="close-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">${data.error}</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+          }
+        )
+    } else {
+      console.log("Error");
+    }
+  })
+
+
+</script>
+
+<script>
+  let check = document.querySelector('#checker1')
+  check.addEventListener('change' ,  ()=> {
+  let remove = document.querySelector('.modal-footer .delete')
+  
+  if (check.checked) {
+  remove.removeAttribute('disabled')
+  } else {
+  remove.setAttribute('disabled', 'true')
+  }
+  })
+</script>
+
+<script>
+  ClassicEditor.defaultConfig = { 
+    toolbar: { 
+      items: [ 
+        'heading', 
+        '|', 
+        'bold', 
+        'italic', 
+        '|', 
+        'bulletedList', 
+        'numberedList', 
+        '|', 
+        'insertTable', 
+        '|', 
+ 
+        'undo', 
+        'redo' 
+      ] 
+    }, 
+ 
+    table: { 
+      contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] 
+    }, 
+    language: 'en' 
+  }; 
+  ClassicEditor.create(document.querySelector("#editor")).catch((error) => { 
+    console.error(error); 
+  });
+  ClassicEditor.create(document.querySelector("#editor1")).catch((error) => { 
+    console.error(error); 
+  });
+  ClassicEditor.create(document.querySelector("#editor2")).catch((error) => { 
+    console.error(error); 
+  });
+  
+</script>
+
+<script>
+    (function () {
+      'use strict'
+
+      var forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+
+<script>
+    setInterval(myTimer, 1000);
+    function myTimer() {
+        const d = new Date();
+        let cc = document.querySelectorAll('.alert_nums');
+        cc.forEach(element => {
+            element.innerHTML -= 1
+        })
+    }
+    setInterval(()=> $(".alert").alert('close'), 6000)
+</script>
+
+<script>
+  let category = document.querySelector("#category");
+  let sub_category = document.querySelector("#sub_category");
+  let temps = document.querySelectorAll(".temp");
+  let xCopy = temps
+
+  temps.forEach(item => {
+      if (item.dataset.id == category.value){
+          // pass
+      }
+      else {
+          item.remove()
+      }
+  })
+
+  category.addEventListener("change", () => { 
+      temps.forEach(item => {
+          item.remove()
+      })
+      xCopy.forEach(item => {
+          if (item.dataset.id == category.value){
+              sub_category.appendChild(item)
+          }
+      })
+  })
+</script>
+
+{% endblock js_content %}

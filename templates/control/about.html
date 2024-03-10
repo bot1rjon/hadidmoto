@@ -1,0 +1,219 @@
+{% extends 'control/base.html' %}
+{% load static %}
+
+
+    {% block page_title %}Ma'lumotlar{% endblock page_title %}
+    {% block content %}
+      <div class="row">
+
+          <!-- @@@@@@@@@ About Start @@@@@@@@@@@@@@ -->
+          <div class="col-12">
+            <div class="card radius-10 w-100 p-4">
+              {% if base.code == "edit" %}
+              <div class="alert alert-dismissible fade show py-2 bg-warning d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">Ma'lumot O'zgartirildi</div>
+                  </div>
+                </div>
+                <h3 class="alert_nums text-light align-self-center mb-0">7</h3>
+              </div>
+              {% endif %}
+              <form action="{% url 'control_info_edit' %}" method="POST" class="needs-validation" novalidate="">
+              {% csrf_token %}
+              <div class="card-body">
+                <div class="d-flex align-items-center mb-3">
+                  <h3 class="mb-0">Ma'lumotlar</h3>
+                  <div class="dropdown options ms-auto">
+                    <button type="submit" class="btn btn-outline-primary">O'zgartirish</button>
+                  </div>
+                </div>
+                <div class="row g-3 mt-2 align-items-center d-flex">
+                  
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Ish Boshlash hafta kuni (Misol uchun: Dushanba=<span style="color: #FDB819;"><b>Du</b></span>)</label>
+                      <input type="text" name="start_day" value="{{ info.start_day }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Ish Tugash hafta kuni (Misol uchun: Yakshanba=<span style="color: #FDB819;"><b>Ya</b></span>)</label>
+                      <input type="text" name="finish_day" value="{{ info.finish_day }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+                                 
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Ish Boshlashnish vaqti  (Misol uchun: <span style="color: #FDB819;"><b>08:00</b></span>)</label>
+                      <input type="text" name="start_day_time" value="{{ info.start_day_time }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                                                   
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Ish Tugash vaqti  (Misol uchun: <span style="color: #FDB819;"><b>18:00</b></span>)</label>
+                      <input type="text" name="finish_day_time" value="{{ info.finish_day_time }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Qo'shimcha Ish kunlari (Misol uchun: <span style="color: #FDB819;"><b>Se-Pa</b></span>)</label>
+                      <input type="text" name="addition_day" value="{{ info.addition_day }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Qo'shimcha Ish kunlari vaqti (Misol uchun: <span style="color: #FDB819;"><b>05:00 - 20:00</b></span>)</label>
+                      <input type="text" name="addition_day_time" value="{{ info.addition_day_time }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="mb-3">
+                      <label class="mb-1">Manzil</label>
+                      <input type="text" name="address" value="{{ info.address }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Telefon Raqam 1</label>
+                      <input type="text" name="phone_first" value="{{ info.phone_first }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="mb-1">Telefon Raqam 2</label>
+                      <input type="text" name="phone_second" value="{{ info.phone_second }}" class="form-control has-validation" required="">
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6 col-12">
+                      <div class="mb-3">
+                        <label class="mb-1">Telegram Nomi</label>
+                        <input type="text" name="telegram"  value="{{ info.telegram }}" class="form-control has-validation">
+                      </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="mb-3">
+                      <label class="mb-1">Telegram Link</label>
+                      <input type="text" name="telegram_link" value="{{ info.telegram_link }}" class="form-control has-validation">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="mb-3">
+                      <label class="mb-1">Instagram Nomi</label>
+                      <input type="text" name="instagram" value="{{ info.instagram }}" class="form-control has-validation">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 col-12">
+                    <div class="mb-3">
+                      <label class="mb-1">Instagram Link</label>
+                      <input type="text" name="instagram_link"  value="{{ info.instagram_link }}" class="form-control has-validation">
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="mb-3">
+                      <label class="mb-1">Xarita link</label>
+                      <input type="text" name="map" value="{{ info.map }}" class="form-control has-validation">
+                    </div>
+                  </div>
+
+                  </div>
+              </div>
+              </form>
+            </div>
+          </div>
+          <!-- @@@@@@@@@@@ About End @@@@@@@@@@@@@@ -->
+      </div>
+    {% endblock content %}
+    
+
+{% block js_content %}
+
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+      'use strict'
+
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.querySelectorAll('.needs-validation')
+
+      // Loop over them and prevent submission
+      Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+
+<script>
+  ClassicEditor.defaultConfig = { 
+    toolbar: { 
+      items: [ 
+      'heading', 
+      '|', 
+      'bold', 
+      'italic', 
+      '|', 
+      'fontSize',
+      'bulletedList', 
+      'numberedList', 
+      '|', 
+      'insertTable', 
+      '|', 
+      
+        'undo', 
+        'redo' 
+      ] 
+    }, 
+ 
+    table: { 
+      contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] 
+    }, 
+    language: 'en' 
+  }; 
+  ClassicEditor.create(document.querySelector("#editor")).catch((error) => { 
+    console.error(error); 
+  });
+  ClassicEditor.create(document.querySelector("#editor1")).catch((error) => { 
+    console.error(error); 
+  });
+  ClassicEditor.create(document.querySelector("#editor2")).catch((error) => { 
+    console.error(error); 
+  });
+</script>
+
+<script>
+    setInterval(myTimer, 1000);
+    function myTimer() {
+        const d = new Date();
+        let cc = document.querySelectorAll('.alert_nums');
+        cc.forEach(element => {
+            element.innerHTML -= 1
+        })
+    }
+    setInterval(()=> $(".alert").alert('close'), 6000)
+</script>
+
+{% endblock js_content %}

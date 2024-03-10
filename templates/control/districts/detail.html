@@ -22,23 +22,34 @@
                 <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Viloyat</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select" required name="region_id" aria-label="Default select example" id="validationCustom00">
-                    {% for region in regions %}
-                      {% if district.region.id == region.id %}
-                        <option value="{{region.id}}" selected>{{ region.title }}</option>
+                  <select id="region_change" class="form-select" name="region_id" required aria-label="Default select example" id="validationCustom00">
+                    {% for r in regions %}  
+                      {% if r.id == district.region.id %}
+                        <option value="{{r.id}}" data-title="{{ r.title }}" selected>{{ r.title }}</option>
                       {% else %}
-                        <option value="{{region.id}}">{{ region.title }}</option>
+                        <option value="{{r.id}}" data-title="{{ r.title }}">{{ r.title }}</option>
                       {% endif %}
                     {% endfor %}
                   </select>
-                  <div class="invalid-feedback">Iltimos, Viloyatni tanlang</div>
+                    <div class="invalid-feedback">Iltimos, Viloyat tanlang</div>
                   </div>
                 </div>
-              <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Shahar Nomi</label>
-                <input type="text" name="title" class="form-control" id="validationCustom01" value="{{ district.title }}" required>
-                <div class="invalid-feedback">Iltimos, viloyat nomini kiriting</div>
-              </div>
+                <div class="col-md-12">
+                  <label for="validationCustomUsername" class="form-label">Shahar Tanlang</label>
+                  <div class="input-group has-validation">
+                  <select class="form-select" name="title" required aria-label="Default select example" id="validationCustom00">
+                    <option class="require_choose" value="">Shahar tanlang</option>
+                    {% for d in districts %}
+                      {% if d.title == district.title %}
+                        <option class="city-select" value="{{ d.title }}" data-title="{{ d.region }}" selected>{{ d.title }}</option>
+                      {% else %}
+                        <option class="city-select" value="{{ d.title }}" data-title="{{ d.region }}">{{ d.title }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                    <div class="invalid-feedback">Iltimos, Shahar tanlang</div>
+                  </div>
+                </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">O'zgartirish</button>
               </div>
@@ -77,6 +88,31 @@
   </div>
 </div>
 
+<script>
+  let region = document.querySelector("#region_change")
+  let districts = document.querySelectorAll('.city-select')
+  let require_choose = document.querySelector('.require_choose')
+  let reg_set = region.options[region.selectedIndex];
+  let reg_title = reg_set.dataset.title;
+  districts.forEach(item => {
+      if (reg_title == item.dataset.title) {
+          item.classList.remove('d-none')
+      } else {
+          item.classList.add('d-none')
+      }
+  });
+  region.addEventListener("change", ()=> {
+    let d_reg_set = region.options[region.selectedIndex];
+    let d_reg_title = d_reg_set.dataset.title;
+      districts.forEach(item => {
+          if (d_reg_title == item.dataset.title) {
+              item.classList.remove('d-none')
+          } else {
+              item.classList.add('d-none')
+          }
+      })
+  });
+</script>
 
 <script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
 <script>

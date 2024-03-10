@@ -1,0 +1,101 @@
+{% extends 'control/base.html' %}
+{% load static %}
+
+
+
+      {% block page_title %}Sliderlar{% endblock page_title %}
+
+      {% block add %}
+      <div class="ms-auto d-block">
+        <div class="btn-group">
+          <a href="{% url 'control_slider_add' %}" class="btn btn-outline-primary d-block">Yaratish</a>
+        </div>
+      </div>
+      {% endblock add %}
+
+      {% block content %}
+      {% if base.code == "created" %}
+      <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+          </div>
+          <div class="ms-3">
+            <div class="text-white">Slider Yaratildi</div>
+          </div>
+        </div>
+        <h3 class="alert_nums text-light align-self-center mb-0">7</h3>
+      </div>
+      {% elif base.code == "deleted" %}
+      <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="fs-3 text-white"><ion-icon name="trash-sharp"></ion-icon>
+          </div>
+          <div class="ms-3">
+            <div class="text-white">Slider O'chirildi</div>
+          </div>
+        </div>
+        <h3 class="alert_nums text-light align-self-center mb-0">7</h3>
+      </div>
+      {% elif base.code == "edited" %}
+      <div class="alert alert-dismissible fade show py-2 bg-warning d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+          <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+          </div>
+          <div class="ms-3">
+            <div class="text-white">Slider O'zgartirildi</div>
+          </div>
+        </div>
+        <h3 class="alert_nums text-light align-self-center mb-0">7</h3>
+      </div>
+      {% endif %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="example" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr class="text-center">
+                                    <th>Sarlavha</th>
+                                    <th>Qo'shimcha Sarlavha</th>
+                                    <th>Rasm</th>
+                                    <th>Batafsil</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for slider in sliders %}
+                                <tr style="vertical-align: middle; text-align: center;">
+                                    <td>{{ slider.category.title }}</td>
+                                    <td>{{ slider.subtitle }}</td>
+                                    <td><img height="50" width="50"  class="rounded" src="{{slider.image.url}}" alt="img_not_found" style="object-fit: cover;"></td>
+                                    <td><a href="{% url 'control_slider_detail' slider.id  %}" class="btn btn-success btn-sm"> O'zgartirish </a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <style>
+              #example_wrapper .col-sm-12 {
+                overflow-y: auto;
+              }
+            </style>
+      {% endblock content %}
+
+{% block js_content %}
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script src="{% static 'control/assets/plugins/datatable/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'control/assets/plugins/datatable/js/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'control/assets/js/table-datatable.js' %}"></script>
+
+<script>
+  setInterval(myTimer, 1000);
+  function myTimer() {
+      const d = new Date();
+      let cc = document.querySelectorAll('.alert_nums');
+      cc.forEach(element => {
+          element.innerHTML -= 1
+      })
+  }
+  setInterval(()=> $(".alert").alert('close'), 6000)
+</script>
+{% endblock js_content %}

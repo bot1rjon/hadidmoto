@@ -22,7 +22,7 @@
                 <div class="col-md-12">
                   <div class="mb-4 d-flex flex-column gap-3 align-items-center justify-content-between">
                     <div class="shadow text-center">
-                      <img src="{{ master.image.url }}" alt="{{ master.image.url }}" style="object-fit: cover;" class="rounded" height="350px">
+                      <img src="{{ master.image.url }}" alt="{{ master.image.url }}" style="object-fit: cover;" class="rounded" width="300">
                     </div>
                     </div>
                           
@@ -32,9 +32,9 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                  <label for="validationCustomUsername" class="form-label"></label>
+                  <label for="validationCustomUsername" class="form-label">Viloyat Tanlang</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select" required name="region_id" aria-label="Default select example" id="validationCustom00">
+                  <select class="form-select region-change" required name="region_id" aria-label="Default select example" id="validationCustom00">
                     {% for region in regions %}
                       {% if master.region.id == region.id %}
                         <option value="{{region.id}}" selected>{{ region.title }}</option>
@@ -47,19 +47,23 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <label for="validationCustomUsername" class="form-label"></label>
+                  <label for="validationCustomUsername" class="form-label">Shahar Tanlang</label>
                   <div class="input-group has-validation"> 
                   <select class="form-select" required name="district_id" aria-label="Default select example" id="validationCustom00">
                     {% for district in districts %}
                       {% if master.district.id == district.id %}
-                        <option value="{{district.id}}" selected>{{ district.title }}</option>
+                        <option class="city-select" value="{{district.id}}" data-id="{{district.region.id}}" selected>{{ district.title }}</option>
                       {% else %}
-                        <option value="{{district.id}}">{{ district.title }}</option>
+                        <option class="city-select" value="{{district.id}}" data-id="{{district.region.id}}">{{ district.title }}</option>
                       {% endif %}
                     {% endfor %}
                   </select>
                   <div class="invalid-feedback">Iltimos, Shaharni tanlang</div>
                   </div>
+                </div>
+                <div class="col-md-12">
+                  <label for="validationCustom01" class="form-label">Mo'jjal</label>
+                  <input type="text" name="sub_city" class="form-control" value="{{ master.sub_city }}">
                 </div>
               <div class="col-md-12">
                 <label for="validationCustom01" class="form-label">Usta Sarlavhasi</label>
@@ -109,7 +113,7 @@
           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Yopish</button>
           <form action="{% url 'control_master_delete' %}" method="POST">
               {% csrf_token %}
-              <input type="hidden" name="id" value="{{master.id}}">
+              <input type="hidden" name="master_id" value="{{master.id}}">
               <button type="submit" class="btn btn-outline-danger delete" disabled>O'chirish</button>
           </form>
         </div>
@@ -120,6 +124,26 @@
 
 
 <script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script>
+  let region = document.querySelector(".region_change")
+  let districts = document.querySelectorAll('.city-select')
+  districts.forEach(item => {
+      if (region.value == item.dataset.id) {
+          item.classList.remove('d-none')
+      } else {
+          item.classList.add('d-none')
+      }
+  });
+  region.addEventListener("change", ()=> {
+      districts.forEach(item => {
+          if (region.value == item.dataset.id) {
+              item.classList.remove('d-none')
+          } else {
+              item.classList.add('d-none')
+          }
+      })
+  });
+</script>
 <script>
     (function () {
       'use strict'

@@ -1,0 +1,89 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Products Block <################################## <################################ -->
+    <div id="products">
+        <div class="products-block">
+            <div class="container-fluid">
+                <div class="products-wrapper">
+                    <div class="products-nav">
+                        <h3 class="title">Top mahsulotlar</h3>
+                        <div class="line"></div>
+                        <div class="nav-content">
+                            {% for pop_product in popular_products %}
+                            <a href="{% url 'web_product' pop_product.slug %}" class="nav-item">
+                                <div class="nav-item-img">
+                                    <img src="{{ pop_product.image_min.url }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="info">
+                                    <h4 class="nav-title">{{ pop_product.title | truncatechars:18 }}</h4>
+                                    <p class="text text-dark">{{ pop_product.subtitle | truncatechars:18 }}</p>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>  
+                    </div>
+        
+                    <div class="master-block">
+                        <div class="master-nav">
+                            <h2 class="title">Ustalar</h2>
+                            <div class="filter-block">
+                                <h4 class="filter-title"><i class="bi bi-geo-alt-fill"></i> Shaxringizni tanlang </h4>
+                                <div class="filter-select">
+                                    <div class="select-div">
+                                        <select class="select-region select-item" id="FilterRegion">
+                                                <option value="" selected>Barchasi</option>
+                                            {% for region in regions %}
+                                                <option value="{{ region.id }}">{{ region.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="select-div">
+                                        <select class="select-city select-item" id="FilterDistrict">
+                                            <option value="" selected>Barchasi</option>
+                                            {% for district in districts %}
+                                                <option class="CitySelect" data-id="{{district.region.id}}" value="{{ district.id }}">{{ district.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="master-content">
+                            {% for master in masters %}
+                            <div class="master-item FilterClassItem" data-region="{{ master.region.id }}" data-city="{{ master.district.id }}">
+                                <div class="master-img"><img src="{{ master.image.url }}" class="img-fluid" alt=""></div>
+                                <div class="master-info marquee">
+                                    <h1 class="title marque_check">{{ master.title }}</h1>
+                                    <p class="text">{{ master.subtitle }}</p>
+                                    <div class="master-address">
+                                        <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
+                                        <div class="address-title">
+                                            <p>{{ master.region.title }}</p>
+                                            <p>{{ master.district.title }}<span style="font-size: 10px;">( {{master.sub_city}} )</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="master-contact">
+                                        <div class="icon"><i class="bi bi-telephone-fill"></i></div>
+                                        <div class="number">
+                                            {% if master.number_first %}
+                                                <a href="tel:{{ master.number_first }}">{{ master.number_first }}</a>
+                                            {% endif %}
+                                            {% if master.number_second %}
+                                                <br><a href="tel:{{ master.number_first }}">{{ master.number_first }}</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

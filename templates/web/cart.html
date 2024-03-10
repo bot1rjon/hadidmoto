@@ -1,0 +1,116 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Products Block <################################## <################################ -->
+    <div id="cart">
+        <div class="cart-block" id="root">
+            <div class="container-fluid">
+                <div class="cart-wrapper v-show-no-item" v-show="no_item">
+                    <h2 class="title">Savat</h2>
+                    <div class="cart-content">
+                        <div class="product-item" v-for="i in cart_products">
+                            <div class="product-img"><img :src="i.img" class="img-fluid" alt=""></div>
+                            <div class="product-info marquee">
+                                <h1 class="title marque_check">[[ i.title ]]</h1>
+                                <p class="text">[[ i.subtitle ]]</p>
+                                <div v-if="i.company" class="company"><h4 class="com-title">Kompaniya</h4><p class="com">[[ i.company ]]</p></div>
+                                <div class="sale">
+                                    <div v-if="i.old_price != 0" class="old-price">[[ i.old_price ]]</div>
+                                    <div v-if="i.discount != 0" class="sale-percent">- [[ i.discount ]] %</div>
+                                </div>
+                                <h1 class="price">[[ i.price ]] сум</h1>
+                                <div class="add-btn">
+                                    <button style="padding: 0px 12px;" class="plus-btn" @click="cart_order_minus(i.id)">-</button>
+                                    <input type="number" @change="(event) => quantity_change(event, i.id)" :value="i.quantity">
+                                    <button class="minus-btn" @click="cart_order_plus(i.id)">+</button>
+                                </div>
+                                <button class="remove-btn" @click="remove_order(i.id)"><img src="{% static 'web/assets/images/remove.png' %}" alt=""></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="total-product">
+                        <div class="total-number"><span id="total_quant">13</span> ta mahsulot</div>
+                        <button class="send-btn" data-toggle="modal" data-target="#cart_send">Ro’yhatni sotuvchiga yuborish</button>
+                    </div>
+                </div>
+                <div class="empty-block p-5 v-show-empty-block" v-show="empty_block">
+                    <h2 class="text-center text-dark">Savat Bo'sh :(</h2>
+                </div>
+
+
+                <div class="modal fade" id="cart_send" tabindex="-1" role="dialog" aria-labelledby="cart_send" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <button type="button" class="close c-m-close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="contact-us-section section-spacing" style="margin: 0;">
+                            <div class="container-fluid" id="sent-success" v-show="set_success">
+                                <div class="theme-title-one">
+                                    <h4 class="text-center">Buyurtmani Yuborish Uchun Ma'lumotlarni To'ldiring</h4>
+                                </div> <!-- /.theme-title-one -->
+                                <div class="clearfix main-content no-gutters row px-2" style="margin-top: 30px;">
+                                    <div class="col-12">
+                                        <div class="form-wrapper">
+                                            <div class="theme-form-one form-valish" autocomplete="off">
+                                                <div class="row">
+                                                    <div class="col-md-12 order-send-item">
+                                                        <label for="OrderRegion" class="form-label">Viloyat *</label>
+                                                        <select class="form-select" id="OrderRegion" name="region_id" required>
+                                                            <option value="Toshkent">Toshkent</option>
+                                                            <option value="Toshkent shahri">Toshkent shahri</option>
+                                                            <option value="Farg'ona">Farg'ona</option>
+                                                            <option value="Andijon">Andijon</option>
+                                                            <option value="Namangan">Namangan</option>
+                                                            <option value="Buxoro">Buxoro</option>
+                                                            <option value="Jizzax">Jizzax</option>
+                                                            <option value="Navoiy">Navoiy</option>
+                                                            <option value="Qashqadaryo">Qashqadaryo</option>
+                                                            <option value="Qoraqalpog'iston">Qoraqalpog'iston</option>
+                                                            <option value="Samarqand">Samarqand</option>
+                                                            <option value="Sirdaryo">Sirdaryo</option>
+                                                            <option value="Surxondaryo">Surxondaryo</option>
+                                                            <option value="Xorazm">Xorazm</option>
+                                                            <option value="Xorazm">Qoraqalpog'iston</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-6 order-send-item">
+                                                      <label for="OrderName" class="form-label">Ism *</label>
+                                                      <input class="" type="text" name="title" id="OrderName" required>
+                                                    </div>
+                                                    <div class="col-lg-6 order-send-item">
+                                                        <label for="OrderPhone" class="form-label">Telefon *</label>
+                                                        <input type="number" name="title" id="OrderPhone" required>
+                                                    </div>
+                                                </div> <!-- /.row -->
+                                                <div class="text-center">
+                                                    <button class="theme-button-one order-send-btn" @click="send_order" id="OrderSendButton">Yuborish</button>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="alert-wrapper" id="mm-alert-success" v-show="mm_alert_success">
+                                <div id="success">
+                                    <div class="wrapper">
+                                        <p>Byurtma Muvoffaqiyatli Yuborildi Siz Bilan Tez Orada Bog'lanamiz</p>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <script src="{% static 'web/assets/js/cart.js' %}"></script>
+{% endblock content %}

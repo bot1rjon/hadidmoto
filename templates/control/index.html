@@ -3,7 +3,48 @@
 
     {% block page_title %}Biz haqimizda{% endblock page_title %}
     {% block content %}
-      
+    
+    <div class="row">
+      <div class="col-lg-7 col-md-6 col-sm-12">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Mahsulotlar</h5>
+            <p class="card-text">Do'kondagi barcha mahsulotlar soni <span class="text-dark" style="font-size: 18px;"><b>{{ total_products }}</b> ta</span></p>
+            <p class="card-text">To'p mahsulotlar soni <span class="text-dark" style="font-size: 20px;"><b>{{ total_populars }}</b></span> ta</p>
+            <a href="{% url 'control_products_all' %}" style="background-color: #FDB819;" class="btn">Barcha Mahsulotlar</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-6 col-sm-12">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Toifalar</h5>
+            <p class="card-text">Do'kondagi barcha toifalar soni <span class="text-success"><b><h4>{{ total_categories }} ta</h4></b></span></p>
+            <a href="{% url 'control_categories_all' %}" style="background-color: #FDB819;" class="btn">Barcha Toifalar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-md-6 col-sm-12">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Ustalar</h5>
+            <p class="card-text">Bizning Ustalar soni <span class="text-success"><b><h4>{{ total_masters }} ta</h4></b></span></p>
+            <a href="{% url 'control_categories_all' %}" style="background-color: #FDB819;" class="btn">Barcha Ustalar</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 col-md-6 col-sm-12">
+        <div class="card">
+          <div class="card-body text-center">
+            <h5 class="card-title">Slayderlar</h5>
+            <p class="card-text">Asosiy Slayderlar soni <span class="text-success"><b><h4>{{ total_sliders }} ta</h4></b></span></p>
+            <a href="{% url 'control_sliders_all' %}" style="background-color: #FDB819;" class="btn">Barcha Slayderlar</a>
+          </div>
+        </div>
+      </div>
+      </div>
 
     {% endblock content %}
 

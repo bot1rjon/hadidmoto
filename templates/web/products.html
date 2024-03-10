@@ -1,0 +1,105 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Products Block <################################## <################################ -->
+    <div id="products">
+        <div class="products-block">
+            <div class="container-fluid">
+                <div class="products-wrapper">
+                    <div class="products-nav">
+                        <h3 class="title">To'p mahsulotlar</h3>
+                        <div class="line"></div>
+                        <div class="nav-content">
+                        {% for pop_product in popular_products %}
+                            <a href="{% url 'web_product' pop_product.slug %}" class="nav-item">
+                                <div class="nav-item-img">
+                                    <img src="{{ pop_product.image_min.url }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="info">
+                                    <h4 class="nav-title">{{ pop_product.title | truncatechars:15 }}</h4>
+                                    <p class="text text-dark">{{ pop_product.subtitle | truncatechars:15 }}</p>
+                                </div>
+                            </a>
+                        {% endfor %}
+                        </div>
+                    </div>
+                    <div class="products-content">
+                        <h2 class="title">Barcha mahsulotlar</h2>
+                        <div class="products-content-block">
+                            {% for product in products %}
+                                <div class="product-item">
+                                    <div class="product-img">
+                                        <img src="{{ product.image_min.url }}" class="img-fluid" alt="">
+                                    </div>
+                                    <a href="{% url 'web_product' product.slug %}" class="title">{{ product.title | truncatechars:15 }}</a>
+                                    <p class="text">{{ product.subtitle | truncatechars:15 }}</p>
+                                    {% if product.discount %}
+                                        <button class="sale-btn">Chegirma {{ product.discount }}%</button>
+                                    {% endif %}
+                                    <button class="add-btn addToCart" data-title="{{product.title}}" data-subtitle="{{product.subtitle}}" data-id="{{product.id}}" data-img="{{product.image_min.url}}" data-company="{{product.company}}" data-discount="{{product.discount}}" data-price="{{product.price}}" data-old_price="{{product.old_price}}">Savatga Qo'shish</button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% if is_paginated %}
+                            <nav class="mt-4 pagination-item-products">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item {% if not products.has_previous %} disabled {% endif %}">
+                                        <a class="page-link" href="?page=1"><i class="bi bi-chevron-double-left"></i></a>
+                                    </li>
+                                    <li class="page-item {% if not products.has_previous %} disabled {% endif %}">
+                                        <a class="page-link" href="
+                                            {% if products.has_previous %}?page={{ products.previous_page_number }}{% endif %}">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                    {% if products.number|add:'-4' > 1 %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="?page={{ products.number|add:'-5' }}">&hellip;</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in products.paginator.page_range %}  
+                                        {% if products.number == i %}
+                                            <li class="page-item disabled">
+                                                <a class="text-white bg-primary page-link" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% elif i > products.number|add:'-5' and i < products.number|add:'5' %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if products.paginator.num_pages > products.number|add:'4' %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="?page={{ products.number|add:'5' }}">&hellip;</a>
+                                        </li>
+                                    {% endif %}
+
+                                    <li class="page-item {% if not products.has_next %} disabled {% endif %}">
+                                        <a class="page-link" href="
+                                            {% if products.has_next %}?page={{products.next_page_number}}{% endif %}">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item {% if not products.has_next %} disabled {% endif %}">
+                                        <a class="page-link" href="
+                                            {% if products.has_next %}?page={{products.paginator.num_pages}}{% endif %}">
+                                            <i class="bi bi-chevron-double-right"></i>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </nav>  
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}

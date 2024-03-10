@@ -13,19 +13,27 @@
                 <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Viloyat</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select" name="region_id" required aria-label="Default select example" id="validationCustom00">
+                  <select id="region_change" class="form-select" name="region_id" required aria-label="Default select example" id="validationCustom00">
+                  <option class="require_choose" value="">Viloyat Tanlang</option>
                     {% for region in regions %}
-                      <option value="{{region.id}}">{{ region.title }}</option>
+                      <option data-title="{{ region.title }}" value="{{region.id}}">{{ region.title }}</option>
                     {% endfor %}
                   </select>
                     <div class="invalid-feedback">Iltimos, Viloyat tanlang</div>
                   </div>
                 </div>
-              <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Shahar Nomi</label>
-                <input type="text" name="title" class="form-control" id="validationCustom01" required>
-                <div class="invalid-feedback">Iltimos, shahar nomini kiriting</div>
-              </div>
+                <div class="col-md-12">
+                  <label for="validationCustomUsername" class="form-label">Shahar Tanlang</label>
+                  <div class="input-group has-validation"> 
+                  <select class="form-select" name="title" required aria-label="Default select example" id="validationCustom00">
+                    <option class="require_choose" value="">Shahar tanlang</option>
+                    {% for d in districts %}
+                      <option class="city-select" value="{{ d.title }}" data-title="{{ d.region }}">{{ d.title }}</option>
+                    {% endfor %}
+                  </select>
+                    <div class="invalid-feedback">Iltimos, Shahar tanlang</div>
+                  </div>
+                </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">Yaratish</button>
               </div>
@@ -39,6 +47,31 @@
 
 {% block js_content %}
 <script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script>
+  let region = document.querySelector("#region_change")
+  let districts = document.querySelectorAll('.city-select')
+  let require_choose = document.querySelector('.require_choose')
+  let reg_set = region.options[region.selectedIndex];
+  let reg_title = reg_set.dataset.title;
+  districts.forEach(item => {
+      if (reg_title == item.dataset.title) {
+          item.classList.remove('d-none')
+      } else {
+          item.classList.add('d-none')
+      }
+  });
+  region.addEventListener("change", ()=> {
+    let d_reg_set = region.options[region.selectedIndex];
+    let d_reg_title = d_reg_set.dataset.title;
+      districts.forEach(item => {
+          if (d_reg_title == item.dataset.title) {
+              item.classList.remove('d-none')
+          } else {
+              item.classList.add('d-none')
+          }
+      })
+  });
+</script>
 <script>
   // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {

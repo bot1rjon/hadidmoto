@@ -1,0 +1,427 @@
+{% extends 'control/base.html' %}
+{% load static %}
+
+
+    {% block page_title %}Mahsulot Yaratish{% endblock page_title %}
+
+    {% block content %}
+      <div class="card">
+          <div class="card-body">
+            <div class="p-4 border rounded">
+              <form class="row g-3 needs-validation" action="{% url 'control_product_create' %}" method="POST" enctype="multipart/form-data" novalidate>
+                  {% csrf_token %}
+                  <div class="col-md-12">
+                      <div class="mb-4 d-flex flex-column gap-3 align-items-center justify-content-between">
+                        <div class=" shadow text-center">
+                          <img src="{% static 'control/assets/images/404-error.png' %}" alt="..." class="rounded-circle" width="300">
+                        </div>
+                        </div>
+                              
+                        <label for="validationCustom01" class="form-label">Mahsulot Rasmi 400x400</label>
+                        <div class="input-group has-validation mb-3">
+                          <input type="file" name="file" required class="form-control has-validation" accept="image/png, image/jpeg"required id="inputGroupFile02">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label for="validationCustomUsername" class="form-label">Toifasi</label>
+                      <div class="input-group has-validation"> 
+                      <select class="form-select category_select" id="category" required name="category_id" aria-label="Default select example" id="validationCustom00">
+                        {% for category in categories %}
+                          <option value="{{category.id}}">{{ category.title }}</option>
+                        {% endfor %}
+                      </select>
+                      <div class="invalid-feedback">Iltimos, Toifa tanlang</div>
+                      </div>
+                    </div>
+                  <div class="col-md-12">
+                    <label for="validationCustom01" class="form-label">Nomi</label>
+                    <input type="text" name="title" class="form-control" id="validationCustom01" required>
+                    <div class="invalid-feedback">Iltimos, nomini kiriting</div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="validationCustom01" class="form-label">Qo'shimcha Nomi</label>
+                    <input type="text" name="subtitle" class="form-control" id="validationCustom01" required>
+                    <div class="invalid-feedback">Iltimos, qo'shimcha nomini kiriting</div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="validationCustom01" class="form-label">Kompanyasi(BRAND)</label>
+                    <input type="text" name="company" class="form-control" id="validationCustom01">
+                  </div>
+                  <div class="form-check-danger form-check form-switch">
+                    <input class="form-check-input" name="popular" type="checkbox" id="flexSwitchCheckCheckedDanger">
+                    <label class="form-check-label" for="flexSwitchCheckCheckedDanger">To'p Mahsulot</label>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationCustomUsername" class="form-label">Narxi</label>
+                    <div class="input-group has-validation">
+                      <input type="number" name="price" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                      <div class="invalid-feedback">Iltimos, narxini kiriting</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationCustomUsername" class="form-label">Chegirma</label>
+                    <div class="input-group has-validation"> 
+                      <input type="number" name="discount" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend">
+                      <span class="input-group-text" id="inputGroupPrepend">%</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationCustomUsername" class="form-label">Eski Narxi</label>
+                    <div class="input-group has-validation">
+                      <input type="number" name="old_price" value="0" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationCustomUsername" class="form-label">Prioritet</label>
+                    <div class="input-group has-validation"> <span class="input-group-text" id="inputGroupPrepend">№</span>
+                      <input type="number" name="priority" value="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                      <div class="invalid-feedback">Iltimos, priotitet kiriting</div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <label for="validationCustomUsername" class="form-label">Tavsif</label>
+                      <textarea id="editor2" class="form-control" name="description"></textarea>
+                  </div>
+                <div class="col-12">
+                  <button class="btn btn-primary" type="submit">Yaratish</button>
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+    {% endblock content %}
+
+
+
+{% block js_content %}
+
+<div class="col">
+  <!-- Modal -->
+  <div class="modal fade" id="category_add" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><b>Добавить новое категория</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert_box">
+          </div>
+          <div class="row g-3 needs-validation">
+          <div class="col-md-12">
+            <label for="validationCustom01" class="form-label">Название категория RU</label>
+            <input type="text" name="category_title_ru" class="form-control" id="validationCustom01" required>
+            <div class="invalid-feedback">Пожалуйста, введите название.</div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustom01" class="form-label">Название категория UZ</label>
+            <input type="text" name="category_title_uz" class="form-control" id="validationCustom01" required>
+            <div class="invalid-feedback">Пожалуйста, введите название.</div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustomUsername" class="form-label">Приоритет</label>
+            <div class="input-group has-validation"> <span class="input-group-text" id="inputGroupPrepend">№</span>
+              <input type="number" name="category_priority" value="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); if (this.value.length > 12) {this.value = 0}" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+              <div class="invalid-feedback">Пожалуйста, укажите приоритет.</div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отмена</button>
+            <button type="submit" class="btn btn-success category_add">Добавить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col">
+  <!-- Modal -->
+  <div class="modal fade" id="subcategory_add" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><b>Добавить новое подкатегория</b></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert_box_subcategory">
+          </div>
+          <div class="row g-3 needs-validation">
+          <div class="col-md-12">
+            <label for="validationCustomUsername" class="form-label">Категория</label>
+            <div class="input-group has-validation"> 
+            <select class="form-select category_select" required name="subcategory_category" aria-label="Default select example" id="validationCustom00">
+              {% for category in categories %}
+                <option value="{{category.id}}">{{ category.title_ru }}</option>
+              {% endfor %}
+            </select>
+            <div class="invalid-feedback">Пожалуйста, укажите категория.</div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustom01" class="form-label">Название подкатегория RU</label>
+            <input type="text" name="subcategory_title_ru" class="form-control" id="validationCustom01" required>
+            <div class="invalid-feedback">Пожалуйста, введите название.</div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustom01" class="form-label">Название подкатегория UZ</label>
+            <input type="text" name="subcategory_title_uz" class="form-control" id="validationCustom01" required>
+            <div class="invalid-feedback">Пожалуйста, введите название.</div>
+          </div>
+          <div class="col-md-12">
+            <label for="validationCustomUsername" class="form-label">Приоритет</label>
+            <div class="input-group has-validation"> <span class="input-group-text" id="inputGroupPrepend">№</span>
+              <input type="number" name="subcategory_priority" value="1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1'); if (this.value.length > 12) {this.value = 0}" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+              <div class="invalid-feedback">Пожалуйста, укажите приоритет.</div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Отмена</button>
+            <button type="submit" class="btn btn-success subcategory_add">Добавить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script src="{% static 'control/assets/plugins/input-tags/js/tagsinput.js' %}"></script>
+<script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.ui.widget.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.fileupload.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'control/assets/plugins/fancy-file-uploader/jquery.fancy-fileupload.js' %}"></script>
+<script src="{% static 'control/assets/plugins/Drag-And-Drop/dist/imageuploadify.min.js' %}"></script>
+<script src="{% static 'control/assets/js/form-file-upload.js' %}"></script>
+
+<script>
+  let category_add = document.querySelector('.modal .category_add')
+
+  url_c = '/control/category_add/'
+  category_add.addEventListener('click', ()=>{
+    let category_title_uz = document.querySelector(".modal input[name='category_title_uz']");
+    let category_title_ru = document.querySelector(".modal input[name='category_title_ru']");
+    let category_priority = document.querySelector(".modal input[name='category_priority']");
+    if (category_title_ru.value != '' && category_title_uz.value != '' && category_priority.value != '' ){
+      fetch(url_c, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({
+            title_uz: category_title_uz.value,
+            title_ru: category_title_ru.value,
+            priority: category_priority.value
+        })
+        }).then(resp => resp.json()).then(
+          data => {
+            if (data.code == 200) {
+              let select_option = document.querySelectorAll('.category_select')
+              select_option[0].innerHTML += `<option value="${data.category.id}">${data.category.title_ru}</option>`
+              select_option[1].innerHTML += `<option value="${data.category.id}">${data.category.title_ru}</option>`
+              category_title_uz.value = ''
+              category_title_ru.value = ''
+              category_priority.value = 1
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">Категория добавлено</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+            else{
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="close-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">${data.error}</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+          }
+        )
+    } else {
+      console.log("Error");
+    }
+  })
+
+
+  let subcategory_add = document.querySelector('.modal .subcategory_add')
+
+  url = '/control/subcategory_add/'
+  subcategory_add.addEventListener('click', ()=>{
+    let subcategory_category = document.querySelector(".modal select[name='subcategory_category']");
+    console.log(subcategory_category.value);
+    let subcategory_title_uz = document.querySelector(".modal input[name='subcategory_title_uz']");
+    let subcategory_title_ru = document.querySelector(".modal input[name='subcategory_title_ru']");
+    let subcategory_priority = document.querySelector(".modal input[name='subcategory_priority']");
+    if (subcategory_title_ru.value != '' && subcategory_title_uz.value != '' && subcategory_priority.value != '' ){
+      fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken
+        },
+        body: JSON.stringify({
+            category_id: subcategory_category.value, 
+            title_uz: subcategory_title_uz.value,
+            title_ru: subcategory_title_ru.value,
+            priority: subcategory_priority.value
+        })
+        }).then(resp => resp.json()).then(
+          data => {
+            if (data.code == 200) {
+              let select_option_subcategory = document.querySelector('.subcategory_select')
+              select_option_subcategory.innerHTML += `<option value="${data.subcategory.id}">${data.subcategory.title_ru}</option>`
+              subcategory_title_uz.value = ''
+              subcategory_title_ru.value = ''
+              subcategory_priority.value = 1
+              let alert_box = document.querySelector('.alert_box_subcategory')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-success d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="checkmark-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">Подкатегория добавлено</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+            else{
+              let alert_box = document.querySelector('.alert_box')
+              alert_box.innerHTML = `
+              <div class="alert alert-dismissible fade show py-2 bg-danger d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                  <div class="fs-3 text-white"><ion-icon name="close-circle-sharp"></ion-icon>
+                  </div>
+                  <div class="ms-3">
+                    <div class="text-white">${data.error}</div>
+                  </div>
+                </div>
+              </div>
+              `
+            }
+          }
+        )
+    } else {
+      console.log("Error");
+    }
+  })
+
+
+</script>
+
+<script>
+  ClassicEditor.defaultConfig = { 
+    toolbar: { 
+      items: [ 
+        'heading', 
+        '|', 
+        'bold', 
+        'italic', 
+        '|', 
+        'bulletedList', 
+        'numberedList', 
+        '|', 
+        'insertTable', 
+        '|', 
+ 
+        'undo', 
+        'redo' 
+      ] 
+    }, 
+ 
+    table: { 
+      contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'] 
+    }, 
+    language: 'en' 
+  }; 
+  ClassicEditor.create(document.querySelector("#editor")).catch((error) => { 
+    console.error(error); 
+  });
+  ClassicEditor.create(document.querySelector("#editor1")).catch((error) => { 
+    console.error(error); 
+  });
+  ClassicEditor.create(document.querySelector("#editor2")).catch((error) => { 
+    console.error(error); 
+  });
+  
+</script>
+
+<script>
+    (function () {
+      'use strict'
+
+      var forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+        }, false)
+      })
+    })()
+</script>
+
+<script>
+    setInterval(myTimer, 1000);
+    function myTimer() {
+        const d = new Date();
+        let cc = document.querySelectorAll('.alert_nums');
+        cc.forEach(element => {
+            element.innerHTML -= 1
+        })
+    }
+    setInterval(()=> $(".alert").alert('close'), 6000)
+  </script>
+
+<script>
+  let category = document.querySelector("#category");
+  let sub_category = document.querySelector("#sub_category");
+  let temps = document.querySelectorAll(".temp");
+  let xCopy = temps
+
+  temps.forEach(item => {
+      if (item.dataset.id == category.value){
+          // pass
+      }
+      else {
+          item.remove()
+      }
+  })
+
+  category.addEventListener("change", () => { 
+      temps.forEach(item => {
+          item.remove()
+      })
+      xCopy.forEach(item => {
+          if (item.dataset.id == category.value){
+              sub_category.appendChild(item)
+          }
+      })
+  })
+</script>
+
+{% endblock js_content %}

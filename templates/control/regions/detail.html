@@ -19,11 +19,21 @@
             <form class="row g-3 needs-validation" action="{% url 'control_region_edit' %}" enctype="multipart/form-data" method="POST" novalidate>
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ region.id }}">
-              <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Viloyat Nomi</label>
-                <input type="text" name="title" class="form-control" id="validationCustom01" value="{{ region.title }}" required>
-                <div class="invalid-feedback">Iltimos, viloyat nomini kiriting</div>
-              </div>
+                <div class="col-md-12">
+                  <label for="validationCustomUsername" class="form-label">Viloyat Nomi</label>
+                  <div class="input-group has-validation"> 
+                  <select class="form-select" name="title" required aria-label="Default select example" id="validationCustom00">
+                    {% for r in regions %}  
+                      {% if r == region.title %}
+                        <option value="{{r}}" selected>{{ r }}</option>
+                      {% else %}
+                        <option value="{{r}}">{{ r }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                    <div class="invalid-feedback">Iltimos, Viloyat tanlang</div>
+                  </div>
+                </div>
               <div class="col-12">
                 <button class="btn btn-primary" type="submit">O'zgartirish</button>
               </div>

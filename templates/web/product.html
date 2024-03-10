@@ -1,0 +1,109 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Products Block <################################## <################################ -->
+    <div id="products">
+        <div class="products-block">
+            <div class="container-fluid">
+                <div class="products-wrapper">
+                    <div class="products-nav">
+                        <h3 class="title">To'p mahsulotlar</h3>
+                        <div class="line"></div>
+                        <div class="nav-content">
+                            {% for pop_product in popular_products %}
+                            <a href="{% url 'web_product' pop_product.slug %}" class="nav-item">
+                                <div class="nav-item-img">
+                                    <img src="{{ pop_product.image_min.url }}" class="img-fluid" alt="">
+                                </div>
+                                <div class="info">
+                                    <h4 class="nav-title">{{ pop_product.title | truncatechars:18 }}</h4>
+                                    <p class="text text-dark">{{ pop_product.subtitle | truncatechars:18 }}</p>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="products-content">
+                        <h2 class="title">{{ product.title }}</h2>
+                        <div class="product-detail-block">
+                            <div class="product-detail-wrapper">
+                                <div class="detail-img-block">
+                                    <div class="shop-details-nav-wrap">
+                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link active" id="item-one-tab" data-toggle="tab" href="#item-one" role="tab" aria-controls="item-one" aria-selected="true"><img src="{{ product.image_min.url }}" class="img-fluid" alt=""></a>
+                                            </li>
+                                            {% if product_image %}
+                                                {% for product_img in product_image %}
+                                                <li class="nav-item" role="presentation">
+                                                    <a class="nav-link" id="item-two-tab" data-toggle="tab" href="#item-{{product_img.id}}" role="tab" aria-controls="item-two" aria-selected="true"><img src="{{ product_img.img_min.url }}" class="img-fluid" alt=""></a>
+                                                </li>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                    <div class="shop-details-img-wrap">
+                                        <div class="tab-content" id="myTabContent">
+                                            <div class="tab-pane fade show active" id="item-one" role="tabpanel" aria-labelledby="item-one-tab">
+                                                <div class="shop-details-img">
+                                                    <img src="{{ product.image_max.url }}" alt="">
+                                                </div>
+                                            </div>
+                                            {% if product_image %}
+                                                {% for product_imag in product_image %}
+                                                <div class="tab-pane fade" id="item-{{ product_imag.id }}" role="tabpanel" aria-labelledby="item-two-tab">
+                                                    <div class="shop-details-img">
+                                                        <img src="{{ product_imag.img_full.url }}" alt="">
+                                                    </div>
+                                                </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-info-block">
+                                    <h1 class="title">{{ product.title }}</h1>
+                                    <p class="text">{{ product.subtitle }}</p>
+                                    <div class="company"><h4 class="com-title">Kompaniya</h4><p class="com">Denso</p></div>
+                                    {% if product.discount %}
+                                    <div class="sale">
+                                        <div class="old-price">{{ product.old_price }} сум</div>
+                                        <div class="sale-percent">-{{ product.discount }}%</div>
+                                    </div>
+                                    {% endif %}
+                                    <h1 class="price">{{ product.price }} сум</h1>
+                                    <button class="add-btn addToCart" data-title="{{product.title}}" data-subtitle="{{product.subtitle}}" data-id="{{product.id}}" data-img="{{product.image_min.url}}" data-company="{{product.company}}" data-discount="{{product.discount}}" data-price="{{product.price}}" data-old_price="{{product.old_price}}">Savatga Qo'shish</button>
+                                </div>
+                            </div>
+                            <div class="detail-iformation text-dark">
+                                <p>{{ product.description | safe }}</p>
+                            </div>
+                        </div>
+
+                        <h2 class="title">O'xshash mahsulotlar</h2>
+                        <div class="products-content-block owl-carousel owl-smillar-products owl-theme" style="margin-top: 2rem;grid-template-columns: 1fr !important;">
+                            {% for products in product.category.product_set.all %}
+                                {% if products.id != product.id %}
+                                <div class="product-item">
+                                    <div class="product-img">
+                                        <img src="{{ products.image_min.url }}" class="img-fluid" alt="">
+                                    </div>
+                                    <a href="{% url 'web_product' products.slug %}" class="title">{{ products.title }}</a>
+                                    <p class="text">{{ products.subtitle }}</p>
+                                    {% if products.discount %}
+                                        <button class="sale-btn">Chegirma {{ products.discount }}%</button>
+                                    {% endif %}
+                                    <button class="add-btn addToCart" data-title="{{products.title}}" data-subtitle="{{products.subtitle}}" data-id="{{products.id}}" data-img="{{products.image_min.url}}" data-company="{{products.company}}" data-discount="{{products.discount}}" data-price="{{products.price}}" data-old_price="{{products.old_price}}">Savatga Qo'shish</button>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock content %}

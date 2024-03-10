@@ -1,0 +1,220 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HADID MOTO</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/images/title_logo.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Css -->
+    <link rel="stylesheet" href="{% static 'web/assets/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'web/assets/css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'web/assets/css/setting.css' %}">
+
+    <!-- Js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{% static 'web/assets/css/animate.min.css' %}">
+    <!-- Vue js -->
+    <script src="{% static 'web/assets/vue.js/vue.js' %}"></script>
+</head>
+<body>
+
+    <!-- Navigator <####################################### <################################ -->
+    <header>
+        <div class="header-top bg-dark text-light">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="header-top-left text-left col-6">
+                        <div class="icon mr-3"><i class="bi bi-clock-fill"></i></div>
+                        <div class="start-day text-left">
+                            <p class="">{{ base.info.start_day | truncatechars:2 }}</p>
+                            <p>{{ base.info.start_day_time | truncatechars:5 }}</p>
+                        </div>
+                        <div class="early-days text-center">
+                            <p>{{ base.info.addition_day | truncatechars:5 }}</p>
+                            <p class="text-yellow line">{{ base.info.addition_day_time | truncatechars:12 }}</p>
+                        </div>
+                        <div class="end-day">
+                            <p class="text-right">{{ base.info.finish_day | truncatechars:2 }}</p>
+                            <p>{{ base.info.finish_day_time | truncatechars:5 }}</p>
+                        </div>
+                    </div>
+                    <div class="header-top-right col-6">
+                        <div class="icon"><i class="bi bi-geo-alt-fill"></i></div>
+                        <div class="location">
+                            <p>{{ base.info.address }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <div class="navigator bg-main text-dark">
+                <div class="container-fluid">
+                    <div class="nav-parent">
+                        <div class="nav-child logo ml-0 pl-0">
+                            <a href="{% url 'web_index' %}"><img class="img-fluid" src="{% static 'web/assets/images/logo.png' %}" alt=""></a>
+                        </div>
+                        <div class="nav-child search">
+                            <div class="search-content">
+                                <div class="search-div">
+                                    <input type="text" id="sserc" placeholder="Qidiruv">
+                                    <ul class="search-dropdown" id="show-search-dropdown">
+                                        {% for category in base.categories %}
+                                            <li class="parent-title d-none"><a class="search_title" href="{% url 'web_category' category.slug %}">{{ category.title }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <button class="search-btn"><i class="bi bi-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="nav-child contact pr-0">
+                            <div class="icon"><i class="bi bi-telephone-fill"></i></div>
+                            <div class="number">
+                                <a href="tel:{{ base.info.phone_first }}">{{ base.info.phone_first }}</a>
+                                <a href="tel:{{ base.info.phone_second }}">{{ base.info.phone_second }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div class="header-bottom">
+            <div class="container-fluid">
+                <div class="header-bottom-block">
+                    <ul class="nav-content">
+                        <div class="list-down-menu">
+                            <li class="nav-list" id="nav-list">
+                                <a href="#.">
+                                    <img src="{% static 'web/assets/images/list.png' %}" alt="" class="list">
+                                    <p class="text">MAHSULOTLAR KATALOGI</p>
+                                </a>
+                            </li>
+                            <ul class="list-menu-dropdown" id="show-list-menu-dropdown">
+                                {% for category in base.categories %}
+                                    <li><a href="{% url 'web_category' category.slug %}">{{ category.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="nav-down-menu">
+                            <li class="nav-menu" id="nav-menu"><a href="#."><p class="text">MENU</p><img src="{% static 'web/assets/images/list.png' %}" alt="" class="list"></a></li>
+                            <ul class="nav-menu-dropdown" id="show-nav-menu-dropdown">
+                                {% for nav_cat in base.nav_categories %}
+                                    <li><a href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
+                                {% endfor %}
+                                <li><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
+                                <li><a href="{% url 'web_masters' %}">USTALAR</a></li>
+                            </ul>
+                        </div>
+                        <div class="menu-title">
+                            {% for nav_cat in base.nav_categories %}
+                                <li class="title"><a href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
+                            {% endfor %}
+                            <li class="title"><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
+                            <li class="title"><a href="{% url 'web_masters' %}">USTALAR</a></li>
+                        </div>
+                        <li class="basket"><a href="{% url 'web_cart' %}"><p class="text">SAVAT</p><img src="{% static 'web/assets/images/basket.png' %}" alt="" class="basket-img"><span id="total_quantity" class="total_quantity"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block content %}
+    <div id="cart">
+        <div class="cart-block">
+            <div class="container-fluid">
+                <div class="empty-block p-5 v-show-empty-block" v-show="empty_block">
+                    <h1 class="text-center text-dark">404 :(</h1>
+                    <h3 class="text-dark text-center py-4">Nimadur Xato Ketdi</h3>
+                    <div class="text-center">
+                        <a href="{% url 'web_index' %}" class="btn btn-lg back-btn404">Bosh Sahifa</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
+    <!-- Footer <########################################## <################################ -->
+    <footer>
+        <div class="footer-top bg-main owl-carousel owl-foot-sliders owl-theme">
+            {% for footslider in base.footsliders  %}
+            <div class="item">
+                <h1 class="title">{{ footslider.title }}</h1>
+                <div class="img"><img src="{{footslider.image.url}}" alt=""></div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="footer-block bg-dark">
+            <div class="container">
+                <div class="footer-wrapper">
+                    <div class="footer-content logo-wrapper">
+                        <div class="logo-block">
+                            <div class="logo-img mb-2"><img src="{% static 'web/assets/images/logo-footer.png' %}" alt=""></div>
+                            <div class="phone-block">
+                                <a href="">{{ base.info.phone_first }}</a><br>
+                                <a href="">{{ base.info.phone_second }}</a>
+                            </div>
+                        </div>
+                        <div class="social-block">
+                            <div class="social">
+                                <i class="bi bi-telegram"></i>
+                                <a href="{{base.info.telegram_link}}" target="_blank">{{ base.info.telegram }}</a>
+                            </div>
+                            <div class="social">
+                                <i class="bi bi-instagram"></i>
+                                <a href="{{base.info.instagram}}">{{ base.info.instagram }}</a>
+                            </div>
+                            <div class="social">
+                                <i class="bi bi-geo-alt-fill icon"></i>
+                                <a href="#.">{{ base.info.address }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-content menu-wrapper">
+                        <h4 class="title text-light">Menu</h4>
+                        <a href="" class="text-light d-block">Biz Haqimizda</a>
+                        <a href="" class="text-light d-block">Mahsulotlar</a>
+                        <a href="" class="text-light d-block">Ustalar</a>
+                        <a href="" class="text-light d-block">Manzil</a>
+                    </div>
+                    <div class="footer-content category-wrapper" style="justify-content: start;">
+                        <h4 class="title text-light">Kategoriya</h4>
+                        <a href="" class="text-light d-block">Skuter</a>
+                        <a href="" class="text-light d-block">Mototsikl</a>
+                        <a href="" class="text-light d-block">Van</a>
+                        <a href="" class="text-light d-block">Motoroller</a>
+                    </div>
+                </div>
+                <div class="social-footer">
+                    <div class="social">
+                        <i class="bi bi-telegram"></i>
+                        <a href="{{base.info.telegram_link}}" target="_blank">{{ base.info.telegram }}</a>
+                    </div>
+                    <div class="social">
+                        <i class="bi bi-instagram"></i>
+                        <a href="{{base.info.instagram}}">{{ base.info.instagram }}</a>
+                    </div>
+                    <div class="social">
+                        <i class="bi bi-geo-alt-fill icon"></i>
+                        <a href="#.">{{ base.info.address }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="{% static 'web/assets/js/main.js' %}"></script>
+    <script src="{% static 'web/assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'web/assets/js/bootstrap.min.js' %}"></script>
+
+
+</body>
+</html>

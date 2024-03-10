@@ -12,7 +12,7 @@
                 <div class="col-md-12">
                   <div class="mb-4 d-flex flex-column gap-3 align-items-center justify-content-between">
                     <div class=" shadow text-center">
-                      <img src="{% static 'control/assets/images/404-error.png' %}" alt="..." style="object-fit: cover;" class="rounded"  height="350px">
+                      <img src="{% static 'control/assets/images/404-error.png' %}" alt="..." style="object-fit: cover;" class="rounded"  width="300">
                     </div>
                     </div>
                           
@@ -24,7 +24,8 @@
                 <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Viloyat</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select" name="region_id" required aria-label="Default select example" id="validationCustom00">
+                  <select class="form-select region_change" name="region_id" required aria-label="Default select example" id="validationCustom00">
+                  <option class="require_choose" value="">Viloyat Tanlang</option>
                     {% for region in regions %}
                       <option value="{{region.id}}">{{ region.title }}</option>
                     {% endfor %}
@@ -36,12 +37,17 @@
                   <label for="validationCustomUsername" class="form-label">Shahar</label>
                   <div class="input-group has-validation"> 
                   <select class="form-select" name="district_id" required aria-label="Default select example" id="validationCustom00">
+                  <option class="require_choose" value="">Shahar tanlang</option>
                     {% for district in districts %}
-                      <option value="{{district.id}}">{{ district.title }}</option>
+                      <option value="{{district.id}}" class="city-select" data-id="{{district.region.id}}">{{ district.title }}</option>
                     {% endfor %}
                   </select>
                     <div class="invalid-feedback">Iltimos, Shahar tanlang</div>
                   </div>
+                </div>
+                <div class="col-md-12">
+                  <label for="validationCustom01" class="form-label">Mo'jjal</label>
+                  <input type="text" name="sub_city" class="form-control">
                 </div>
               <div class="col-md-12">
                 <label for="validationCustom01" class="form-label">Usta Sarlavhasi</label>
@@ -74,6 +80,26 @@
 
 {% block js_content %}
 <script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
+<script>
+  let region = document.querySelector(".region_change")
+  let districts = document.querySelectorAll('.city-select')
+  districts.forEach(item => {
+      if (region.value == item.dataset.id) {
+          item.classList.remove('d-none')
+      } else {
+          item.classList.add('d-none')
+      }
+  });
+  region.addEventListener("change", ()=> {
+      districts.forEach(item => {
+          if (region.value == item.dataset.id) {
+              item.classList.remove('d-none')
+          } else {
+              item.classList.add('d-none')
+          }
+      })
+  });
+</script>
 <script>
   // Example starter JavaScript for disabling form submissions if there are invalid fields
     (function () {
