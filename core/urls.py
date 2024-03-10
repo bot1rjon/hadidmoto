@@ -6,10 +6,10 @@ from django.conf.urls import handler404
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('akhmadjonov_komron/', admin.site.urls),
 
     path('', include('web.urls')),
-    path('control/', include('control.urls')),
+    path('sklad/', include('control.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

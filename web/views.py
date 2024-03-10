@@ -162,18 +162,20 @@ def web_order_send(request):
     }
     order_id = c.id
     orders = data["orders"]
+    total_price = 0
     message = f""" Buyurtma: {order_id}
     Mijoz: {data['name']} 
-    Nomer: {data["phone"]} 
+    No'mer: {data["phone"]} 
     Manzil: {data["region"]} \n \n\n MAHSULOTLAR """
     for order in orders:
+        total_price += int(order['price'] * order["quantity"])
         message += f"""
         Mahsulot: {order["title"]}
         Narxi: {order['price']} so'm
-        Umumiy Narxi:  {int(order['price'] * order["quantity"])} so'm
         Miqdori: {order["quantity"]} ta
+        Umumiy Narxi:  {int(order['price'] * order["quantity"])} so'm
         """
-
-    url = f"https://api.telegram.org/bot6672406816:AAEPBP1PK5qJpt7qDJcn7lJhPQQrhWIQ1S8/sendMessage?chat_id=-4175113157&text=" + message
+    message += f"""\n\n Umumiy Narx: {total_price} so'm """
+    url = f"https://api.telegram.org/bot6373586338:AAG2J0VbKRT99sUgBvTqLL3kP4Lf25tXG2U/sendMessage?chat_id=-4156342549&text=" + message
     r = requests.get(url) 
     return JsonResponse(answer, safe=False)
