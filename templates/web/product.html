@@ -95,8 +95,9 @@
                                     <div class="product-img">
                                         <img src="{{ products.image_min.url }}" class="img-fluid" alt="">
                                     </div>
-                                    <a href="{% url 'web_product' products.slug %}" class="title">{{ products.title }}</a>
-                                    <p class="text">{{ products.subtitle }}</p>
+                                    <a href="{% url 'web_product' products.slug %}" class="title">{{ products.title | truncatechars:15 }}</a>
+                                    
+                                    <p class="text">{{ products.subtitle | truncatechars:15 }}</p>
                                     {% if products.available_price %}
                                     <div class="product_available_price">
                                         {% if products.old_price %}
