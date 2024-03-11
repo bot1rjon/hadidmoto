@@ -91,7 +91,7 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-                                <button class="search-btn"><i class="bi bi-search"></i></button>
+                                <button class="search-btn"><i style="color: #fff;" class="bi bi-search"></i></button>
                             </div>
                         </div>
                         <div class="nav-child contact pr-0">
@@ -239,11 +239,52 @@
             color: #333 !important;
         }
         .product_available_price .price {
-            color: #333 !important;
+            color: #333;
         }
         .list-menu-dropdown li a {
             display: block !important;
         }
+        .product_available_price {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin: 0.7rem 0rem;
+            }
+            .product_available_price .old_price{
+            padding-right: 10px;
+            margin-bottom: 0;
+            text-decoration: line-through;
+            color: #737373;
+            font-size: 18px;
+            }
+
+            .product_available_price .price{
+            margin-bottom: 0;
+            font-size: 20px;
+            }
+
+            .product_available_price {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0.5rem 0rem;
+      margin-top: 0;
+   }
+   
+   @media (max-width: 576px) {
+    .product_available_price .old_price{
+        padding-right: 7px;
+        margin-bottom: 0;
+        text-decoration: line-through;
+        color: #737373;
+        font-size: 13px;
+    }
+    
+    .product_available_price .price{
+        margin-bottom: 0;
+        font-size: 15px;
+    }    
+    }
     </style>
     <script>
         document.addEventListener('contextmenu', function(e) {
@@ -252,5 +293,8 @@
     </script>
 
 
+
+   
+    
 </body>
 </html>
