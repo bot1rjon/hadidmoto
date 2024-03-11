@@ -42,6 +42,11 @@
                                     {% endif %}
                                     <h4 class="price">{{ product.price }}</h4>
                                     </div>
+                                {% else %}
+                                    <div class="product_available_price">
+                                        <h5 class="old_price" style="color: transparent;">0</h5>
+                                        <h4 class="price" style="color: transparent;">0</h4>
+                                    </div>
                                 {% endif %}
                                 {% if product.discount %}
                                     <button class="sale-btn">Chegirma {{ product.discount }}%</button>
