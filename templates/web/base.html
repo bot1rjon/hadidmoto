@@ -87,7 +87,7 @@
                                     <input type="text" id="sserc" placeholder="Qidiruv">
                                     <ul class="search-dropdown" id="show-search-dropdown">
                                         {% for category in base.categories %}
-                                            <li class="parent-title d-none"><a class="search_title" href="{% url 'web_category' category.slug %}">{{ category.title }}</a></li>
+                                            <li class="parent-title d-none"><a style="display: block;" class="search_title" href="{% url 'web_category' category.slug %}">{{ category.title }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -126,7 +126,7 @@
                             <li class="nav-menu" id="nav-menu"><a href="#."><p class="text">MENU</p><img src="{% static 'web/assets/images/list.png' %}" alt="" class="list"></a></li>
                             <ul class="nav-menu-dropdown" id="show-nav-menu-dropdown">
                                 {% for nav_cat in base.nav_categories %}
-                                    <li><a href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
+                                    <li><a style="display: block;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
                                 {% endfor %}
                                 <li><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
                                 <li><a href="{% url 'web_masters' %}">USTALAR</a></li>
@@ -234,7 +234,11 @@
     <script src="{% static 'web/assets/js/main.js' %}"></script>
     <script src="{% static 'web/assets/js/popper.min.js' %}"></script>
     <script src="{% static 'web/assets/js/bootstrap.min.js' %}"></script>
-
+    <style>
+        button {
+            color: #333 !important;
+        }
+    </style>
     <script>
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
