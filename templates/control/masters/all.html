@@ -63,8 +63,8 @@
                               {% for master in masters %}
                               <tr style="vertical-align: middle; text-align: center;">
                                   <td>{{ master.title }}</td>
-                                  <td>{{ master.region.title }}</td>
-                                  <td>{{ master.district.title }}</td>
+                                  <td>{{ master.region_name }}</td>
+                                  <td>{{ master.district_name }}</td>
                                   <td><a href="{% url 'control_master_detail' master.id %}" class="btn btn-success btn-sm"> O'zgartirish </a></td>
                               </tr>
                               {% endfor %}

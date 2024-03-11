@@ -22,12 +22,22 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                  <label for="validationCustom01" class="form-label">Ustaxona Nomi</label>
+                  <input type="text" name="title" class="form-control" id="validationCustom01" required>
+                  <div class="invalid-feedback">Iltimos, Ustaxona nomini kiriting</div>
+                </div>
+                <div class="col-md-12">
+                  <label for="validationCustom01" class="form-label">Yo'nalishi</label>
+                  <input type="text" name="subtitle" class="form-control" id="validationCustom01" required>
+                  <div class="invalid-feedback">Iltimos, Usta Qo'shimcha Sarlavhasi kiriting</div>
+                </div>
+                <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Viloyat</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select region_change" name="region_id" required aria-label="Default select example" id="validationCustom00">
+                  <select class="form-select region_change" name="region" required aria-label="Default select example" id="validationCustom00">
                   <option class="require_choose" value="">Viloyat Tanlang</option>
                     {% for region in regions %}
-                      <option value="{{region.id}}">{{ region.title }}</option>
+                      <option value="{{region}}">{{ region }}</option>
                     {% endfor %}
                   </select>
                     <div class="invalid-feedback">Iltimos, Viloyat tanlang</div>
@@ -36,32 +46,23 @@
                 <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Shahar</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select" name="district_id" required aria-label="Default select example" id="validationCustom00">
+                  <select class="form-select" name="district" required aria-label="Default select example" id="validationCustom00">
                   <option class="require_choose" value="">Shahar tanlang</option>
                     {% for district in districts %}
-                      <option value="{{district.id}}" class="city-select" data-id="{{district.region.id}}">{{ district.title }}</option>
+                      <option value="{{district.title}}" class="city-select" data-title="{{district.region}}">{{ district.title }}</option>
                     {% endfor %}
                   </select>
                     <div class="invalid-feedback">Iltimos, Shahar tanlang</div>
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <label for="validationCustom01" class="form-label">Mo'jjal</label>
+                  <label for="validationCustom01" class="form-label">Arentr</label>
                   <input type="text" name="sub_city" class="form-control">
                 </div>
               <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Usta Sarlavhasi</label>
-                <input type="text" name="title" class="form-control" id="validationCustom01" required>
-                <div class="invalid-feedback">Iltimos, Usta Sarlavhasi kiriting</div>
-              </div>
-              <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Usta Qo'shimcha Sarlavhasi</label>
-                <input type="text" name="subtitle" class="form-control" id="validationCustom01" required>
-                <div class="invalid-feedback">Iltimos, Usta Qo'shimcha Sarlavhasi kiriting</div>
-              </div>
-              <div class="col-md-12">
                 <label for="validationCustom01" class="form-label">Telefon Raqam 1</label>
-                <input type="number" name="number_first" class="form-control">
+                <input type="number" name="number_first" class="form-control" required>
+                <div class="invalid-feedback">Iltimos, telefon raqam kiriting</div>
               </div>
               <div class="col-md-12">
                 <label for="validationCustom01" class="form-label">Telefon Raqam 2</label>
@@ -84,7 +85,7 @@
   let region = document.querySelector(".region_change")
   let districts = document.querySelectorAll('.city-select')
   districts.forEach(item => {
-      if (region.value == item.dataset.id) {
+      if (region.value == item.dataset.title) {
           item.classList.remove('d-none')
       } else {
           item.classList.add('d-none')
@@ -92,7 +93,7 @@
   });
   region.addEventListener("change", ()=> {
       districts.forEach(item => {
-          if (region.value == item.dataset.id) {
+          if (region.value == item.dataset.title) {
               item.classList.remove('d-none')
           } else {
               item.classList.add('d-none')

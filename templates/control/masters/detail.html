@@ -32,14 +32,24 @@
                     </div>
                 </div>
                 <div class="col-md-12">
+                  <label for="validationCustom01" class="form-label">Ustaxona Nomi</label>
+                  <input type="text" name="title" class="form-control" id="validationCustom01" value="{{ master.title }}" required>
+                  <div class="invalid-feedback">Iltimos, Ustaxona nomini kiriting</div>
+                </div>
+                <div class="col-md-12">
+                  <label for="validationCustom01" class="form-label">Yo'nalishi</label>
+                  <input type="text" name="subtitle" class="form-control" id="validationCustom01" value="{{ master.subtitle }}" required>
+                  <div class="invalid-feedback">Iltimos, Usta yo'nalishini kiriting</div>
+                </div>
+                <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Viloyat Tanlang</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select region-change" required name="region_id" aria-label="Default select example" id="validationCustom00">
+                  <select class="form-select region_change" required name="region" aria-label="Default select example" id="validationCustom00">
                     {% for region in regions %}
-                      {% if master.region.id == region.id %}
-                        <option value="{{region.id}}" selected>{{ region.title }}</option>
+                      {% if master.region_name == region %}
+                        <option value="{{region}}" selected>{{ region }}</option>
                       {% else %}
-                        <option value="{{region.id}}">{{ region.title }}</option>
+                        <option value="{{region}}">{{ region }}</option>
                       {% endif %}
                     {% endfor %}
                   </select>
@@ -49,12 +59,12 @@
                 <div class="col-md-12">
                   <label for="validationCustomUsername" class="form-label">Shahar Tanlang</label>
                   <div class="input-group has-validation"> 
-                  <select class="form-select" required name="district_id" aria-label="Default select example" id="validationCustom00">
+                  <select class="form-select" required name="district" aria-label="Default select example" id="validationCustom00">
                     {% for district in districts %}
-                      {% if master.district.id == district.id %}
-                        <option class="city-select" value="{{district.id}}" data-id="{{district.region.id}}" selected>{{ district.title }}</option>
+                      {% if master.district_name == district.title %}
+                        <option class="city-select" value="{{district.title}}" data-title="{{district.region}}" selected>{{ district.title }}</option>
                       {% else %}
-                        <option class="city-select" value="{{district.id}}" data-id="{{district.region.id}}">{{ district.title }}</option>
+                        <option class="city-select" value="{{district.title}}" data-title="{{district.region}}">{{ district.title }}</option>
                       {% endif %}
                     {% endfor %}
                   </select>
@@ -62,23 +72,13 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <label for="validationCustom01" class="form-label">Mo'jjal</label>
+                  <label for="validationCustom01" class="form-label">Arentr</label>
                   <input type="text" name="sub_city" class="form-control" value="{{ master.sub_city }}">
                 </div>
               <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Usta Sarlavhasi</label>
-                <input type="text" name="title" class="form-control" id="validationCustom01" value="{{ master.title }}" required>
-                <div class="invalid-feedback">Iltimos, Usta Sarlavhasi kiriting</div>
-              </div>
-              <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Usta Qo'shimcha Sarlavhasi</label>
-                <input type="text" name="subtitle" class="form-control" id="validationCustom01" value="{{ master.subtitle }}" required>
-                <div class="invalid-feedback">Iltimos, viloyat nomini kiriting</div>
-              </div>
-              <div class="col-md-12">
                 <label for="validationCustom01" class="form-label">Telefon Raqm 1</label>
-                <input type="number" name="number_first" class="form-control" value="{{ master.number_first }}">
-                <div class="invalid-feedback">Iltimos, viloyat nomini kiriting</div>
+                <input type="number" name="number_first" class="form-control" required value="{{ master.number_first }}">
+                <div class="invalid-feedback">Iltimos, telefon raqam kiriting</div>
               </div>
               <div class="col-md-12">
                 <label for="validationCustom01" class="form-label">Telefon Raqm 2</label>
@@ -125,10 +125,11 @@
 
 <script src="{% static 'control/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js' %}"></script>
 <script>
+  
   let region = document.querySelector(".region_change")
   let districts = document.querySelectorAll('.city-select')
   districts.forEach(item => {
-      if (region.value == item.dataset.id) {
+      if (region.value == item.dataset.title) {
           item.classList.remove('d-none')
       } else {
           item.classList.add('d-none')
@@ -136,7 +137,8 @@
   });
   region.addEventListener("change", ()=> {
       districts.forEach(item => {
-          if (region.value == item.dataset.id) {
+        console.log(item);
+          if (region.value == item.dataset.title) {
               item.classList.remove('d-none')
           } else {
               item.classList.add('d-none')

@@ -5,6 +5,7 @@ $('.owl-sale-products').owlCarousel({
     autoplay:true,
     autoplayTimeout:5000, // Set autoplay timeout in milliseconds (e.g., 2000 for 2 seconds)
     autoplayHoverPause:true,
+    autoHeight: false,
     responsive:{
         0:{
             items: 1.9
@@ -274,6 +275,7 @@ if(document.querySelector("#FilterRegion")){
                         "title": add.dataset.title,
                         "subtitle": add.dataset.subtitle,
                         "quantity": 1,
+                        "available_price": add.dataset.availableprice,
                         "price": add.dataset.price,
                         "old_price": add.dataset.old_price,
                         "img": add.dataset.img,

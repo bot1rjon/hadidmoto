@@ -72,16 +72,23 @@
                         <label for="validationCustom01" class="form-label">Kompanyasi(BRAND)</label>
                         <input type="text" name="company" value="{{ product.company }}" class="form-control" id="validationCustom01">
                       </div>
-                      <div class="form-check-danger form-check form-switch">
-                        <input class="form-check-input" name="popular" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.popular %} checked="" {% endif %}>
-                        <label class="form-check-label" for="flexSwitchCheckCheckedDanger">To'p Mahsulot</label>
-                      </div>
-                      <div class="form-check-danger form-check form-switch">
-                        <input class="form-check-input" name="is_active" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.is_active %} checked="" {% endif %}>
-                        <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Mavjud</label>
+                      <div class="col-md-6">
+                        <div class="form-check-danger form-check form-switch">
+                          <input class="form-check-input" name="popular" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.popular %} checked="" {% endif %}>
+                          <label class="form-check-label" for="flexSwitchCheckCheckedDanger">To'p Mahsulot</label>
+                        </div>                     
                       </div>
                       <div class="col-md-6">
-                        <label for="validationCustomUsername" class="form-label">Narxi</label>
+                        <div class="form-check-danger form-check form-switch">
+                          <input class="form-check-input" name="is_active" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.is_active %} checked="" {% endif %}>
+                          <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Mavjud</label>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-check-danger form-check form-switch">
+                          <input class="form-check-input" name="available_price" type="checkbox" id="flexSwitchCheckCheckedDanger" {% if product.available_price %} checked="" {% endif %}>
+                          <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Narxi</label>
+                        </div>
                         <div class="input-group has-validation">
                           <input type="number" name="price" value="{{ product.price }}" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
                           <div class="invalid-feedback">Iltimos, narxini kiriting</div>

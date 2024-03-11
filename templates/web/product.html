@@ -67,13 +67,18 @@
                                     <h1 class="title">{{ product.title }}</h1>
                                     <p class="text">{{ product.subtitle }}</p>
                                     <div class="company"><h4 class="com-title">Kompaniya</h4><p class="com">Denso</p></div>
-                                    {% if product.discount %}
+                                    
                                     <div class="sale">
+                                        {% if product.available_price %}
                                         <div class="old-price">{{ product.old_price }} сум</div>
+                                        {% endif %}
+                                        {% if product.discount %}
                                         <div class="sale-percent">-{{ product.discount }}%</div>
+                                        {% endif %}
                                     </div>
-                                    {% endif %}
+                                    {% if product.available_price %}
                                     <h1 class="price">{{ product.price }} сум</h1>
+                                    {% endif %}
                                     <button class="add-btn addToCart" data-title="{{product.title}}" data-subtitle="{{product.subtitle}}" data-id="{{product.id}}" data-img="{{product.image_min.url}}" data-company="{{product.company}}" data-discount="{{product.discount}}" data-price="{{product.price}}" data-old_price="{{product.old_price}}">Savatga Qo'shish</button>
                                 </div>
                             </div>
@@ -92,10 +97,23 @@
                                     </div>
                                     <a href="{% url 'web_product' products.slug %}" class="title">{{ products.title }}</a>
                                     <p class="text">{{ products.subtitle }}</p>
+                                    {% if products.available_price %}
+                                    <div class="product_available_price">
+                                        {% if products.old_price %}
+                                        <h5 class="old_price">{{ products.old_price }}</h5>
+                                        {% endif %}
+                                        <h4 class="price">{{ products.price }}</h4>
+                                        </div>
+                                    {% else %}
+                                    <div class="product_available_price">
+                                        <h5 class="old_price" style="color: transparent;">0</h5>
+                                        <h4 class="price" style="color: transparent;">0</h4>
+                                    </div>
+                                    {% endif %}
                                     {% if products.discount %}
                                         <button class="sale-btn">Chegirma {{ products.discount }}%</button>
                                     {% endif %}
-                                    <button class="add-btn addToCart" data-title="{{products.title}}" data-subtitle="{{products.subtitle}}" data-id="{{products.id}}" data-img="{{products.image_min.url}}" data-company="{{products.company}}" data-discount="{{products.discount}}" data-price="{{products.price}}" data-old_price="{{products.old_price}}">Savatga Qo'shish</button>
+                                    <button class="add-btn addToCart" data-title="{{products.title}}" data-availableprice="{{products.available_price}}" data-subtitle="{{products.subtitle}}" data-id="{{products.id}}" data-img="{{products.image_min.url}}" data-company="{{products.company}}" data-discount="{{products.discount}}" data-price="{{products.price}}" data-old_price="{{products.old_price}}">Savatga Qo'shish</button>
                                 </div>
                                 {% endif %}
                             {% endfor %}

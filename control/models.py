@@ -29,6 +29,9 @@ class Master(models.Model):
     number_first = models.CharField(max_length=100, null=True, blank=True)
     number_second = models.CharField(max_length=100, null=True, blank=True)
     image = ResizedImageField(size=[200, 200], quality=100, upload_to="master/", null=True, blank=True)
+    region_name = models.CharField(max_length=225, null=True, blank=True)
+    district_name = models.CharField(max_length=225, null=True, blank=True)
+    
 
     def __str__(self):
         return self.title
@@ -88,7 +91,7 @@ class PopularCategory(models.Model):
 
     def str(self):
         return self.category.title if self.category else "-----"
-
+ 
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
@@ -98,6 +101,7 @@ class Product(models.Model):
     company = models.CharField(max_length=225, null=True, blank=True)
     description = models.TextField()
     price = models.IntegerField(null=True, blank=True)
+    available_price = models.BooleanField(default=True) # False bosa o'chgan
     discount = models.IntegerField(default=0, null=True, blank=True)
     old_price = models.IntegerField(null=True, blank=True)
     priority = models.IntegerField(default=0, null=True, blank=True)

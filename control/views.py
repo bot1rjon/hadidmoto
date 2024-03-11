@@ -10,7 +10,7 @@ from django.contrib import auth
 
 # Create your views here.
 
-SECURE_PATH_ADMIN = '/control/'
+SECURE_PATH_ADMIN = '/sklad/'
 
 def base_context(request):
     try: 
@@ -56,12 +56,14 @@ def control_index(request):
     total_categories = Category.objects.filter(available=True, is_active=True).count()
     total_products = Product.objects.filter(available=True, is_active=True).count()
     total_masters = Master.objects.all().count()
+    total_slidercategories = SliderCategory.objects.all().count()
     total_populars = Product.objects.filter(available=True, is_active=True, popular=True).count()
     total_sliders = Slider.objects.all().count()
     context = {
         "total_categories": total_categories,
         "total_products": total_products,
         "total_masters": total_masters,
+        "total_slidercategories": total_slidercategories,
         "total_sliders": total_sliders,
         "total_populars": total_populars,
         "base": base_context(request=request),
@@ -319,10 +321,12 @@ def control_slider_delete(request):
 @login_required(login_url='login')
 def control_slidercategories_all(request):
     slidercategories = SliderCategory.objects.all()
+    total_slidercategories = SliderCategory.objects.all().count()
     categories = Category.objects.filter(available=True, is_active=True)
     context = {
         "base": base_context(request=request),
-        "slidercategories":slidercategories
+        "slidercategories":slidercategories,
+        "total_slidercategories":total_slidercategories
     }
     return render(request, "control/slidercategories/all.html", context)
     
@@ -330,9 +334,11 @@ def control_slidercategories_all(request):
 @login_required(login_url='login')
 def control_slidercategory_add(request):
     categories = Category.objects.filter(available=True, is_active=True)
+    total_slidercategories = SliderCategory.objects.all().count()
     context = {
         "base": base_context(request=request),
-        "categories": categories
+        "categories": categories,
+        "total_slidercategories":total_slidercategories
     }
     return render(request, "control/slidercategories/add.html", context)
 
@@ -502,7 +508,14 @@ def control_product_create(request):
                 popular = False 
         except:
             popular = False
-        product = Product.objects.create(category=category, title=title, subtitle=subtitle, company=company, priority=priority, description=description, image_min=image_min, image_max=image_max, price=price, old_price=old_price, discount=discount, popular=popular)
+        try:
+            if request.POST["available_price"]:
+                available_price = True
+            else: 
+                available_price = False 
+        except:
+            available_price = False
+        product = Product.objects.create(category=category, title=title, subtitle=subtitle, company=company, priority=priority, description=description, image_min=image_min, image_max=image_max, price=price, old_price=old_price, discount=discount, popular=popular, available_price=available_price)
         product.set_slug(title=title)
         return redirect(SECURE_PATH_ADMIN + 'products/?created')
 
@@ -522,8 +535,6 @@ def control_product_detail(request, id):
     }
     return render(request, 'control/products/detail.html', context)
     
-
-
 
 @login_required(login_url='login')
 def control_product_edit(request):
@@ -555,6 +566,13 @@ def control_product_edit(request):
                 product.popular = False 
         except:
             product.popular = False
+        try:
+            if request.POST["available_price"]:
+                 product.available_price = True
+            else: 
+                 product.available_price = False 
+        except:
+             product.available_price = False
         try: 
             product.image_max = request.FILES["file"]
             product.image_min = request.FILES["file"]
@@ -1175,8 +1193,190 @@ def control_masters_all(request):
 
 @login_required(login_url='login')
 def control_master_add(request):
-    regions = Region.objects.all()
-    districts = District.objects.all()
+    regions = [
+        'Toshkent.V', 'Toshkent.Sh', 'Samarqand', 'Buxoro', 'Namangan', 'Andijon', 'Farg\'ona',
+        'Xorazm', 'Qashqadaryo', 'Surxondaryo', 'Navoiy', 'Jizzax', 'Sirdaryo', 'Qoraqalpog\'iston',
+    ]
+    districts = [
+        {"title": "Bo'ka", "region": "Toshkent.V"},
+        {"title": "Chinoz", "region": "Toshkent.V"},
+        {"title": "Qibray", "region": "Toshkent.V"},
+        {"title": "Ohangaron", "region": "Toshkent.V"},
+        {"title": "Oqqo'rg'on", "region": "Toshkent.V"},
+        {"title": "Parkent", "region": "Toshkent.V"},
+        {"title": "Piskent", "region": "Toshkent.V"},
+        {"title": "Quyi Chirchiq", "region": "Toshkent.V"},
+        {"title": "O'rta Chirchiq", "region": "Toshkent.V"},
+        {"title": "Yangiyo'l", "region": "Toshkent.V"},
+        {"title": "Yuqori Chirchiq", "region": "Toshkent.V"},
+        {"title": "Zangiota", "region": "Toshkent.V"},
+        {"title": "Bektemir", "region": "Toshkent.Sh"},
+        {"title": "Chilonzor", "region": "Toshkent.Sh"},
+        {"title": "Yashnobod", "region": "Toshkent.Sh"},
+        {"title": "Mirobod", "region": "Toshkent.Sh"},
+        {"title": "Mirzo Ulug'bek", "region": "Toshkent.Sh"},
+        {"title": "Sergeli", "region": "Toshkent.Sh"},
+        {"title": "Shayxontohur", "region": "Toshkent.Sh"},
+        {"title": "Olmazor", "region": "Toshkent.Sh"},
+        {"title": "Uchtepa (Toshkent)", "region": "Toshkent.Sh"},
+        {"title": "Yakkasaroy", "region": "Toshkent.Sh"},
+        {"title": "Yunusobod", "region": "Toshkent.Sh"},
+        {"title": "Oqoltin", "region": "Sirdaryo"},
+        {"title": "Boyovut", "region": "Sirdaryo"},
+        {"title": "Guliston", "region": "Sirdaryo"},
+        {"title": "Xovos", "region": "Sirdaryo"},
+        {"title": "Mirzaobod", "region": "Sirdaryo"},
+        {"title": "Saykhunobod", "region": "Sirdaryo"},
+        {"title": "Sardoba", "region": "Sirdaryo"},
+        {"title": "Sirdaryo", "region": "Sirdaryo"},
+        {"title": "Shirin", "region": "Sirdaryo"},
+        {"title": "Yangier", "region": "Sirdaryo"},
+        {"title": "Andijon (tuman)", "region": "Andijon"},
+        {"title": "Andijon shahri", "region": "Andijon"},
+        {"title": "Asaka", "region": "Andijon"},
+        {"title": "Baliqchi", "region": "Andijon"},
+        {"title": "Bo'z (tuman)", "region": "Andijon"},
+        {"title": "Buloqboshi", "region": "Andijon"},
+        {"title": "Buston", "region": "Andijon"},
+        {"title": "Izboskan (tuman)", "region": "Andijon"},
+        {"title": "Jalaquduq (tuman)", "region": "Andijon"},
+        {"title": "Kho'jaobod", "region": "Andijon"},
+        {"title": "Qorg'ontepa", "region": "Andijon"},
+        {"title": "Marhamat", "region": "Andijon"},
+        {"title": "Oltinko'l (tuman)", "region": "Andijon"},
+        {"title": "Pakhtaobod", "region": "Andijon"},
+        {"title": "Shahrixon (tuman)", "region": "Andijon"},
+        {"title": "Khonobod shahri", "region": "Andijon"},
+        {"title": "Ulug'nor (tuman)", "region": "Andijon"},   
+        {"title": "Oltiariq", "region": "Farg'ona"},
+        {"title": "Bag'dod", "region": "Farg'ona"},
+        {"title": "Beshariq", "region": "Farg'ona"},
+        {"title": "Qo'qon", "region": "Farg'ona"},
+        {"title": "Quvusoy", "region": "Farg'ona"},
+        {"title": "Marg'ilon", "region": "Farg'ona"},
+        {"title": "Buvayda", "region": "Farg'ona"},
+        {"title": "Dang'ara", "region": "Farg'ona"},
+        {"title": "Farg'ona", "region": "Farg'ona"},
+        {"title": "Furqat", "region": "Farg'ona"},
+        {"title": "Qushtepa", "region": "Farg'ona"},
+        {"title": "Quva", "region": "Farg'ona"},
+        {"title": "Rishton", "region": "Farg'ona"},
+        {"title": "Sokh", "region": "Farg'ona"},
+        {"title": "Toshloq", "region": "Farg'ona"},
+        {"title": "Uchkuprik", "region": "Farg'ona"},
+        {"title": "O'zbekiston", "region": "Farg'ona"},
+        {"title": "Yozovon", "region": "Farg'ona"},
+        {"title": "Chortoq", "region": "Namangan"},
+        {"title": "Chust", "region": "Namangan"},
+        {"title": "Kosonsoy", "region": "Namangan"},
+        {"title": "Mingbuloq", "region": "Namangan"},
+        {"title": "Namangan", "region": "Namangan"},
+        {"title": "Norin (O'zbekiston)", "region": "Namangan"},
+        {"title": "Pop", "region": "Namangan"},
+        {"title": "To'raqo'rg'on", "region": "Namangan"},
+        {"title": "Uchqo'rg'on", "region": "Namangan"},
+        {"title": "Uychi", "region": "Namangan"},
+        {"title": "Yangiqo'rg'on", "region": "Namangan"},
+        {"title": "Arnasoy", "region": "Jizzax"},
+        {"title": "Bakhmal", "region": "Jizzax"},
+        {"title": "Dostlik", "region": "Jizzax"},
+        {"title": "Forish", "region": "Jizzax"},
+        {"title": "G'allaorol", "region": "Jizzax"},
+        {"title": "Jizzax", "region": "Jizzax"},
+        {"title": "Mirzachul", "region": "Jizzax"},
+        {"title": "Pakhtakor", "region": "Jizzax"},
+        {"title": "Yangiobod", "region": "Jizzax"},
+        {"title": "Zomin", "region": "Jizzax"},
+        {"title": "Sharof Rashidov", "region": "Jizzax"},
+        {"title": "Zafarobod", "region": "Jizzax"},
+        {"title": "Zarbdor", "region": "Jizzax"},
+        {"title": "Angor", "region": "Surxondaryo"},
+        {"title": "Bandixon", "region": "Surxondaryo"},
+        {"title": "Boysun", "region": "Surxondaryo"},
+        {"title": "Denov", "region": "Surxondaryo"},
+        {"title": "Zarqo'rg'on", "region": "Surxondaryo"},
+        {"title": "Qiziriq", "region": "Surxondaryo"},
+        {"title": "Qumqo'rg'on", "region": "Surxondaryo"},
+        {"title": "Muzrabot", "region": "Surxondaryo"},
+        {"title": "Oltinsoy", "region": "Surxondaryo"},
+        {"title": "Sariosiyo", "region": "Surxondaryo"},
+        {"title": "Sherobod", "region": "Surxondaryo"},
+        {"title": "Shurchi", "region": "Surxondaryo"},
+        {"title": "Termiz", "region": "Surxondaryo"},
+        {"title": "Uzun", "region": "Surxondaryo"},
+        {"title": "Chiroqchi", "region": "Qashqadaryo"},
+        {"title": "Dehqonobod", "region": "Qashqadaryo"},
+        {"title": "Guzor", "region": "Qashqadaryo"},
+        {"title": "Qamashi", "region": "Qashqadaryo"},
+        {"title": "Qarshi", "region": "Qashqadaryo"},
+        {"title": "Koson", "region": "Qashqadaryo"},
+        {"title": "Kasbi", "region": "Qashqadaryo"},
+        {"title": "Kitob", "region": "Qashqadaryo"},
+        {"title": "Mirishkor", "region": "Qashqadaryo"},
+        {"title": "Muborak", "region": "Qashqadaryo"},
+        {"title": "Nishon", "region": "Qashqadaryo"},
+        {"title": "Shahrisabz", "region": "Qashqadaryo"},
+        {"title": "Yakkabog", "region": "Qashqadaryo"}, 
+        {"title": "Bulungur", "region": "Samarqand"},
+        {"title": "Ishtikhon", "region": "Samarqand"},
+        {"title": "Jomboy", "region": "Samarqand"},
+        {"title": "Kattaqo'rg'on", "region": "Samarqand"},
+        {"title": "Qo'shrabot", "region": "Samarqand"},
+        {"title": "Narpay", "region": "Samarqand"},
+        {"title": "Nurobod", "region": "Samarqand"},
+        {"title": "Oqdaroy", "region": "Samarqand"},
+        {"title": "Pakhtachi", "region": "Samarqand"},
+        {"title": "Payariq", "region": "Samarqand"},
+        {"title": "Pastdarg'om", "region": "Samarqand"},
+        {"title": "Samarqand", "region": "Samarqand"},
+        {"title": "Toyloq", "region": "Samarqand"},
+        {"title": "Urgut", "region": "Samarqand"},
+        {"title": "Olot", "region": "Buxoro"},
+        {"title": "Buxoro", "region": "Buxoro"},
+        {"title": "G'ijduvon", "region": "Buxoro"},
+        {"title": "Jondor", "region": "Buxoro"},
+        {"title": "Kogon", "region": "Buxoro"},
+        {"title": "Qorako'l", "region": "Buxoro"},
+        {"title": "Qorovulbozor", "region": "Buxoro"},
+        {"title": "Peshku", "region": "Buxoro"},
+        {"title": "Romitan", "region": "Buxoro"},
+        {"title": "Shofirkon", "region": "Buxoro"},
+        {"title": "Vobkent", "region": "Buxoro"},
+        {"title": "Navoiy", "region": "Navoiy"},
+        {"title": "Zarafshon", "region": "Navoiy"},
+        {"title": "Konimex", "region": "Navoiy"},
+        {"title": "Karmana", "region": "Navoiy"},
+        {"title": "Qiziltepa (Navoiy)", "region": "Navoiy"},
+        {"title": "Xatirchi", "region": "Navoiy"},
+        {"title": "Navbahor", "region": "Navoiy"},
+        {"title": "Nurota", "region": "Navoiy"},
+        {"title": "Tomdi", "region": "Navoiy"},
+        {"title": "Uchkuduk", "region": "Navoiy"},
+        {"title": "Bog'ot", "region": "Xorazm"},
+        {"title": "Gurlan", "region": "Xorazm"},
+        {"title": "Xonqa", "region": "Xorazm"},
+        {"title": "Hazorasp", "region": "Xorazm"},
+        {"title": "Xiva", "region": "Xorazm"},
+        {"title": "Qo'shkupir", "region": "Xorazm"},
+        {"title": "Shovot", "region": "Xorazm"},
+        {"title": "Urganch", "region": "Xorazm"},
+        {"title": "Yangiariq", "region": "Xorazm"},
+        {"title": "Yangibozor", "region": "Xorazm"},
+        {"title": "Amudaryo", "region": "Qoraqalpog'iston"},
+        {"title": "Beruniy", "region": "Qoraqalpog'iston"},
+        {"title": "Chimboy", "region": "Qoraqalpog'iston"},
+        {"title": "Ellikqal'a", "region": "Qoraqalpog'iston"},
+        {"title": "Kegayli", "region": "Qoraqalpog'iston"},
+        {"title": "Mo'ynoq", "region": "Qoraqalpog'iston"},
+        {"title": "Nukus", "region": "Qoraqalpog'iston"},
+        {"title": "Qanliko'l", "region": "Qoraqalpog'iston"},
+        {"title": "Qon'g'irat", "region": "Qoraqalpog'iston"},
+        {"title": "Qoraqo'zak", "region": "Qoraqalpog'iston"},
+        {"title": "Shumanay", "region": "Qoraqalpog'iston"},
+        {"title": "Taxtako'pir", "region": "Qoraqalpog'iston"},
+        {"title": "Tortko'l", "region": "Qoraqalpog'iston"},
+        {"title": "Xo'jayli", "region": "Qoraqalpog'iston"},
+    ]
     context = {
         "base": base_context(request=request),
         "districts":districts,
@@ -1188,14 +1388,14 @@ def control_master_add(request):
 @login_required(login_url='login')
 def control_master_create(request):    
     if request.method == "POST" and request.FILES["file"]:  
-        region = get_object_or_404(Region, id=request.POST["region_id"])
-        district = get_object_or_404(District, id=request.POST["district_id"])
         title = request.POST["title"]
         subtitle = request.POST["subtitle"]
         number_first = request.POST["number_first"]
         sub_city = request.POST["sub_city"]
+        region = request.POST["region"]
+        district = request.POST["district"]
         number_second = request.POST["number_second"]
-        master = Master.objects.create(region=region, district=district, sub_city=sub_city, title=title, subtitle=subtitle, number_first=number_first, number_second=number_second,image=request.FILES["file"])
+        master = Master.objects.create(region_name=region, district_name=district, sub_city=sub_city, title=title, subtitle=subtitle, number_first=number_first, number_second=number_second,image=request.FILES["file"])
         master.save()
         return redirect(SECURE_PATH_ADMIN+"masters/?created")
     else: answer = {"code": 404, "error": "Page Not Found"}; return JsonResponse(answer, safe=False)
@@ -1204,8 +1404,190 @@ def control_master_create(request):
 @login_required(login_url='login')
 def control_master_detail(request, id):
     master = get_object_or_404(Master, id=id)
-    regions = Region.objects.all()
-    districts = District.objects.all()
+    regions = [
+        'Toshkent.V', 'Toshkent.Sh', 'Samarqand', 'Buxoro', 'Namangan', 'Andijon', 'Farg\'ona',
+        'Xorazm', 'Qashqadaryo', 'Surxondaryo', 'Navoiy', 'Jizzax', 'Sirdaryo', 'Qoraqalpog\'iston',
+    ]
+    districts = [
+        {"title": "Bo'ka", "region": "Toshkent.V"},
+        {"title": "Chinoz", "region": "Toshkent.V"},
+        {"title": "Qibray", "region": "Toshkent.V"},
+        {"title": "Ohangaron", "region": "Toshkent.V"},
+        {"title": "Oqqo'rg'on", "region": "Toshkent.V"},
+        {"title": "Parkent", "region": "Toshkent.V"},
+        {"title": "Piskent", "region": "Toshkent.V"},
+        {"title": "Quyi Chirchiq", "region": "Toshkent.V"},
+        {"title": "O'rta Chirchiq", "region": "Toshkent.V"},
+        {"title": "Yangiyo'l", "region": "Toshkent.V"},
+        {"title": "Yuqori Chirchiq", "region": "Toshkent.V"},
+        {"title": "Zangiota", "region": "Toshkent.V"},
+        {"title": "Bektemir", "region": "Toshkent.Sh"},
+        {"title": "Chilonzor", "region": "Toshkent.Sh"},
+        {"title": "Yashnobod", "region": "Toshkent.Sh"},
+        {"title": "Mirobod", "region": "Toshkent.Sh"},
+        {"title": "Mirzo Ulug'bek", "region": "Toshkent.Sh"},
+        {"title": "Sergeli", "region": "Toshkent.Sh"},
+        {"title": "Shayxontohur", "region": "Toshkent.Sh"},
+        {"title": "Olmazor", "region": "Toshkent.Sh"},
+        {"title": "Uchtepa (Toshkent)", "region": "Toshkent.Sh"},
+        {"title": "Yakkasaroy", "region": "Toshkent.Sh"},
+        {"title": "Yunusobod", "region": "Toshkent.Sh"},
+        {"title": "Oqoltin", "region": "Sirdaryo"},
+        {"title": "Boyovut", "region": "Sirdaryo"},
+        {"title": "Guliston", "region": "Sirdaryo"},
+        {"title": "Xovos", "region": "Sirdaryo"},
+        {"title": "Mirzaobod", "region": "Sirdaryo"},
+        {"title": "Saykhunobod", "region": "Sirdaryo"},
+        {"title": "Sardoba", "region": "Sirdaryo"},
+        {"title": "Sirdaryo", "region": "Sirdaryo"},
+        {"title": "Shirin", "region": "Sirdaryo"},
+        {"title": "Yangier", "region": "Sirdaryo"},
+        {"title": "Andijon (tuman)", "region": "Andijon"},
+        {"title": "Andijon shahri", "region": "Andijon"},
+        {"title": "Asaka", "region": "Andijon"},
+        {"title": "Baliqchi", "region": "Andijon"},
+        {"title": "Bo'z (tuman)", "region": "Andijon"},
+        {"title": "Buloqboshi", "region": "Andijon"},
+        {"title": "Buston", "region": "Andijon"},
+        {"title": "Izboskan (tuman)", "region": "Andijon"},
+        {"title": "Jalaquduq (tuman)", "region": "Andijon"},
+        {"title": "Kho'jaobod", "region": "Andijon"},
+        {"title": "Qorg'ontepa", "region": "Andijon"},
+        {"title": "Marhamat", "region": "Andijon"},
+        {"title": "Oltinko'l (tuman)", "region": "Andijon"},
+        {"title": "Pakhtaobod", "region": "Andijon"},
+        {"title": "Shahrixon (tuman)", "region": "Andijon"},
+        {"title": "Khonobod shahri", "region": "Andijon"},
+        {"title": "Ulug'nor (tuman)", "region": "Andijon"},   
+        {"title": "Oltiariq", "region": "Farg'ona"},
+        {"title": "Bag'dod", "region": "Farg'ona"},
+        {"title": "Beshariq", "region": "Farg'ona"},
+        {"title": "Qo'qon", "region": "Farg'ona"},
+        {"title": "Quvusoy", "region": "Farg'ona"},
+        {"title": "Marg'ilon", "region": "Farg'ona"},
+        {"title": "Buvayda", "region": "Farg'ona"},
+        {"title": "Dang'ara", "region": "Farg'ona"},
+        {"title": "Farg'ona", "region": "Farg'ona"},
+        {"title": "Furqat", "region": "Farg'ona"},
+        {"title": "Qushtepa", "region": "Farg'ona"},
+        {"title": "Quva", "region": "Farg'ona"},
+        {"title": "Rishton", "region": "Farg'ona"},
+        {"title": "Sokh", "region": "Farg'ona"},
+        {"title": "Toshloq", "region": "Farg'ona"},
+        {"title": "Uchkuprik", "region": "Farg'ona"},
+        {"title": "O'zbekiston", "region": "Farg'ona"},
+        {"title": "Yozovon", "region": "Farg'ona"},
+        {"title": "Chortoq", "region": "Namangan"},
+        {"title": "Chust", "region": "Namangan"},
+        {"title": "Kosonsoy", "region": "Namangan"},
+        {"title": "Mingbuloq", "region": "Namangan"},
+        {"title": "Namangan", "region": "Namangan"},
+        {"title": "Norin (O'zbekiston)", "region": "Namangan"},
+        {"title": "Pop", "region": "Namangan"},
+        {"title": "To'raqo'rg'on", "region": "Namangan"},
+        {"title": "Uchqo'rg'on", "region": "Namangan"},
+        {"title": "Uychi", "region": "Namangan"},
+        {"title": "Yangiqo'rg'on", "region": "Namangan"},
+        {"title": "Arnasoy", "region": "Jizzax"},
+        {"title": "Bakhmal", "region": "Jizzax"},
+        {"title": "Dostlik", "region": "Jizzax"},
+        {"title": "Forish", "region": "Jizzax"},
+        {"title": "G'allaorol", "region": "Jizzax"},
+        {"title": "Jizzax", "region": "Jizzax"},
+        {"title": "Mirzachul", "region": "Jizzax"},
+        {"title": "Pakhtakor", "region": "Jizzax"},
+        {"title": "Yangiobod", "region": "Jizzax"},
+        {"title": "Zomin", "region": "Jizzax"},
+        {"title": "Sharof Rashidov", "region": "Jizzax"},
+        {"title": "Zafarobod", "region": "Jizzax"},
+        {"title": "Zarbdor", "region": "Jizzax"},
+        {"title": "Angor", "region": "Surxondaryo"},
+        {"title": "Bandixon", "region": "Surxondaryo"},
+        {"title": "Boysun", "region": "Surxondaryo"},
+        {"title": "Denov", "region": "Surxondaryo"},
+        {"title": "Zarqo'rg'on", "region": "Surxondaryo"},
+        {"title": "Qiziriq", "region": "Surxondaryo"},
+        {"title": "Qumqo'rg'on", "region": "Surxondaryo"},
+        {"title": "Muzrabot", "region": "Surxondaryo"},
+        {"title": "Oltinsoy", "region": "Surxondaryo"},
+        {"title": "Sariosiyo", "region": "Surxondaryo"},
+        {"title": "Sherobod", "region": "Surxondaryo"},
+        {"title": "Shurchi", "region": "Surxondaryo"},
+        {"title": "Termiz", "region": "Surxondaryo"},
+        {"title": "Uzun", "region": "Surxondaryo"},
+        {"title": "Chiroqchi", "region": "Qashqadaryo"},
+        {"title": "Dehqonobod", "region": "Qashqadaryo"},
+        {"title": "Guzor", "region": "Qashqadaryo"},
+        {"title": "Qamashi", "region": "Qashqadaryo"},
+        {"title": "Qarshi", "region": "Qashqadaryo"},
+        {"title": "Koson", "region": "Qashqadaryo"},
+        {"title": "Kasbi", "region": "Qashqadaryo"},
+        {"title": "Kitob", "region": "Qashqadaryo"},
+        {"title": "Mirishkor", "region": "Qashqadaryo"},
+        {"title": "Muborak", "region": "Qashqadaryo"},
+        {"title": "Nishon", "region": "Qashqadaryo"},
+        {"title": "Shahrisabz", "region": "Qashqadaryo"},
+        {"title": "Yakkabog", "region": "Qashqadaryo"}, 
+        {"title": "Bulungur", "region": "Samarqand"},
+        {"title": "Ishtikhon", "region": "Samarqand"},
+        {"title": "Jomboy", "region": "Samarqand"},
+        {"title": "Kattaqo'rg'on", "region": "Samarqand"},
+        {"title": "Qo'shrabot", "region": "Samarqand"},
+        {"title": "Narpay", "region": "Samarqand"},
+        {"title": "Nurobod", "region": "Samarqand"},
+        {"title": "Oqdaroy", "region": "Samarqand"},
+        {"title": "Pakhtachi", "region": "Samarqand"},
+        {"title": "Payariq", "region": "Samarqand"},
+        {"title": "Pastdarg'om", "region": "Samarqand"},
+        {"title": "Samarqand", "region": "Samarqand"},
+        {"title": "Toyloq", "region": "Samarqand"},
+        {"title": "Urgut", "region": "Samarqand"},
+        {"title": "Olot", "region": "Buxoro"},
+        {"title": "Buxoro", "region": "Buxoro"},
+        {"title": "G'ijduvon", "region": "Buxoro"},
+        {"title": "Jondor", "region": "Buxoro"},
+        {"title": "Kogon", "region": "Buxoro"},
+        {"title": "Qorako'l", "region": "Buxoro"},
+        {"title": "Qorovulbozor", "region": "Buxoro"},
+        {"title": "Peshku", "region": "Buxoro"},
+        {"title": "Romitan", "region": "Buxoro"},
+        {"title": "Shofirkon", "region": "Buxoro"},
+        {"title": "Vobkent", "region": "Buxoro"},
+        {"title": "Navoiy", "region": "Navoiy"},
+        {"title": "Zarafshon", "region": "Navoiy"},
+        {"title": "Konimex", "region": "Navoiy"},
+        {"title": "Karmana", "region": "Navoiy"},
+        {"title": "Qiziltepa (Navoiy)", "region": "Navoiy"},
+        {"title": "Xatirchi", "region": "Navoiy"},
+        {"title": "Navbahor", "region": "Navoiy"},
+        {"title": "Nurota", "region": "Navoiy"},
+        {"title": "Tomdi", "region": "Navoiy"},
+        {"title": "Uchkuduk", "region": "Navoiy"},
+        {"title": "Bog'ot", "region": "Xorazm"},
+        {"title": "Gurlan", "region": "Xorazm"},
+        {"title": "Xonqa", "region": "Xorazm"},
+        {"title": "Hazorasp", "region": "Xorazm"},
+        {"title": "Xiva", "region": "Xorazm"},
+        {"title": "Qo'shkupir", "region": "Xorazm"},
+        {"title": "Shovot", "region": "Xorazm"},
+        {"title": "Urganch", "region": "Xorazm"},
+        {"title": "Yangiariq", "region": "Xorazm"},
+        {"title": "Yangibozor", "region": "Xorazm"},
+        {"title": "Amudaryo", "region": "Qoraqalpog'iston"},
+        {"title": "Beruniy", "region": "Qoraqalpog'iston"},
+        {"title": "Chimboy", "region": "Qoraqalpog'iston"},
+        {"title": "Ellikqal'a", "region": "Qoraqalpog'iston"},
+        {"title": "Kegayli", "region": "Qoraqalpog'iston"},
+        {"title": "Mo'ynoq", "region": "Qoraqalpog'iston"},
+        {"title": "Nukus", "region": "Qoraqalpog'iston"},
+        {"title": "Qanliko'l", "region": "Qoraqalpog'iston"},
+        {"title": "Qon'g'irat", "region": "Qoraqalpog'iston"},
+        {"title": "Qoraqo'zak", "region": "Qoraqalpog'iston"},
+        {"title": "Shumanay", "region": "Qoraqalpog'iston"},
+        {"title": "Taxtako'pir", "region": "Qoraqalpog'iston"},
+        {"title": "Tortko'l", "region": "Qoraqalpog'iston"},
+        {"title": "Xo'jayli", "region": "Qoraqalpog'iston"},
+    ]
     context = {
         "base": base_context(request=request),
         "master": master,
@@ -1220,9 +1602,9 @@ def control_master_detail(request, id):
 def control_master_edit(request):    
     if request.method == "POST" or request.FILES["file"]:  
         master = get_object_or_404(Master, id=request.POST["master_id"])
-        master.region = get_object_or_404(Region, id=request.POST["region_id"])
-        master.district = get_object_or_404(District, id=request.POST["district_id"])
         master.sub_city = request.POST["sub_city"]
+        master.region_name = request.POST["region"]
+        master.district_name = request.POST["district"]
         master.title = request.POST["title"]
         master.subtitle = request.POST["subtitle"]
         master.number_first = request.POST["number_first"]

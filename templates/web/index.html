@@ -100,6 +100,20 @@
                             </div>
                             <a href="{% url 'web_product' discount_p.slug %}" class="title">{{ discount_p.title | truncatechars:15  }}</a>
                             <p class="text">{{ discount_p.subtitle | truncatechars:15  }}</p>
+                            {% if discount_p.available_price %}
+                            <div class="product_available_price">
+                                {% if discount_p.old_price %}
+                                <h5 class="old_price">{{ discount_p.old_price }}</h5>
+                                {% endif %}
+                                <h4 class="price">{{ discount_p.price }}</h4>
+                                </div>
+                            {% else %}
+                            <div class="product_available_price">
+                                <h5 class="old_price" style="color: transparent;">0</h5>
+                                <h4 class="price" style="color: transparent;">0</h4>
+                                </div>
+                            {% endif %}
+
                             <button class="sale-btn">Chegirma {{ discount_p.discount }}%</button>
                         </div>
                         {% endfor %}

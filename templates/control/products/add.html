@@ -52,7 +52,10 @@
                     <label class="form-check-label" for="flexSwitchCheckCheckedDanger">To'p Mahsulot</label>
                   </div>
                   <div class="col-md-6">
-                    <label for="validationCustomUsername" class="form-label">Narxi</label>
+                    <div class="form-check-danger form-check form-switch">
+                      <input class="form-check-input" name="available_price" type="checkbox" id="flexSwitchCheckCheckedDanger" checked="">
+                      <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Narxi</label>
+                    </div>
                     <div class="input-group has-validation">
                       <input type="number" name="price" value="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
                       <div class="invalid-feedback">Iltimos, narxini kiriting</div>

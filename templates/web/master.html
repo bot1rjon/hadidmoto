@@ -36,7 +36,7 @@
                                         <select class="select-region select-item" id="FilterRegion">
                                                 <option value="" selected>Barchasi</option>
                                             {% for region in regions %}
-                                                <option value="{{ region.id }}">{{ region.title }}</option>
+                                                <option value="{{ region }}">{{ region }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -44,7 +44,7 @@
                                         <select class="select-city select-item" id="FilterDistrict">
                                             <option value="" selected>Barchasi</option>
                                             {% for district in districts %}
-                                                <option class="CitySelect" data-id="{{district.region.id}}" value="{{ district.id }}">{{ district.title }}</option>
+                                                <option class="CitySelect" data-id="{{district.region}}" value="{{ district.title }}">{{ district.title }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -53,7 +53,7 @@
                         </div>
                         <div class="master-content">
                             {% for master in masters %}
-                            <div class="master-item FilterClassItem" data-region="{{ master.region.id }}" data-city="{{ master.district.id }}">
+                            <div class="master-item FilterClassItem" data-region="{{ master.region_name }}" data-city="{{ master.district_name }}">
                                 <div class="master-img"><img src="{{ master.image.url }}" class="img-fluid" alt=""></div>
                                 <div class="master-info marquee">
                                     <h1 class="title marque_check">{{ master.title }}</h1>

@@ -8,7 +8,11 @@
       {% block add %}
       <div class="ms-auto d-block">
         <div class="btn-group">
+          {% if total_slidercategories >= 2 %}
+          <a href="#." class="btn btn-outline-primary d-block">Mavjud</a>
+          {% else %}
           <a href="{% url 'control_slidercategory_add' %}" class="btn btn-outline-primary d-block">Yaratish</a>
+          {% endif %}
         </div>
       </div>
       {% endblock add %}

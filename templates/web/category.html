@@ -35,10 +35,18 @@
                                 </div>
                                 <a href="{% url 'web_product' product.slug %}" class="title">{{ product.title | truncatechars:18 }}</a>
                                 <p class="text">{{ product.subtitle | truncatechars:18 }}</p>
+                                {% if product.available_price %}
+                                <div class="product_available_price">
+                                    {% if product.old_price %}
+                                    <h5 class="old_price">{{ product.old_price }}</h5>
+                                    {% endif %}
+                                    <h4 class="price">{{ product.price }}</h4>
+                                    </div>
+                                {% endif %}
                                 {% if product.discount %}
                                     <button class="sale-btn">Chegirma {{ product.discount }}%</button>
                                 {% endif %}
-                                <button class="add-btn addToCart" data-title="{{product.title}}" data-subtitle="{{product.subtitle}}" data-id="{{product.id}}" data-img="{{product.image_min.url}}" data-company="{{product.company}}" data-discount="{{product.discount}}" data-price="{{product.price}}" data-old_price="{{product.old_price}}">Savatga Qo'shish</button>
+                                <button class="add-btn addToCart" data-title="{{product.title}}" data-availableprice="{{product.available_price}}" data-subtitle="{{product.subtitle}}" data-id="{{product.id}}" data-img="{{product.image_min.url}}" data-company="{{product.company}}" data-discount="{{product.discount}}" data-price="{{product.price}}" data-old_price="{{product.old_price}}">Savatga Qo'shish</button>
                             </div>
                             {% endfor %}
                         </div>
