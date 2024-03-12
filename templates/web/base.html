@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HADID MOTO</title>
-    
+
     <meta name="description" content="Ishonchli etkazib berish va transportingiz uchun ehtiyot qismlarning keng tanlovi" />
     <meta name="author" content="hadidmoto.uz">
     <meta property="og:url" content="https://hadidmoto.uz" />
@@ -130,7 +130,7 @@
                             <li class="nav-menu" id="nav-menu"><a href="#."><p class="text">MENU</p><img src="{% static 'web/assets/images/list.png' %}" alt="" class="list"></a></li>
                             <ul class="nav-menu-dropdown" id="show-nav-menu-dropdown">
                                 {% for nav_cat in base.nav_categories %}
-                                    <li><a style="display: block;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
+                                    <li><a style="display: block;text-transform: uppercase;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
                                 {% endfor %}
                                 <li><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
                                 <li><a href="{% url 'web_masters' %}">USTALAR</a></li>
@@ -138,7 +138,7 @@
                         </div>
                         <div class="menu-title">
                             {% for nav_cat in base.nav_categories %}
-                                <li class="title"><a href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
+                                <li class="title"><a style="text-transform: uppercase;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
                             {% endfor %}
                             <li class="title"><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
                             <li class="title"><a href="{% url 'web_masters' %}">USTALAR</a></li>
@@ -268,12 +268,22 @@
             }
 
             .product_available_price {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      margin: 0.5rem 0rem;
-      margin-top: 0;
-   }
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                margin: 0.5rem 0rem;
+                margin-top: 0;
+            }
+            .header-bottom-block .list-menu-dropdown li {
+                border-bottom: 1px solid #9d9a92 !important;
+            }
+            .header-bottom-block .nav-menu-dropdown li {
+                border-bottom: 1px solid #9d9a92 !important;
+            }
+            .navigator .search-content .search-dropdown li {
+                border-bottom: 1px solid #9d9a92 !important;
+            }
+
    
    @media (max-width: 576px) {
     .product_available_price .old_price{
@@ -290,15 +300,11 @@
     }    
     }
     </style>
-    <script>
+    <!-- <script>
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
-    </script>
-
-
-
-   
+    </script> -->   
     
 </body>
 </html>
