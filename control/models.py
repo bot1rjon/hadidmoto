@@ -63,6 +63,9 @@ class Category(models.Model):
     def str(self):
         return self.title
 
+    class Meta: 
+        ordering = ('-priority',)
+
 
 class Slider(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -73,6 +76,9 @@ class Slider(models.Model):
 
     def str(self):
         return self.category.title if self.category else "-----"
+
+    class Meta: 
+        ordering = ('-priority',)
 
  
 class SliderCategory(models.Model):
@@ -121,6 +127,10 @@ class Product(models.Model):
 
     def str(self):
         return self.title
+
+    class Meta: 
+        ordering = ('-priority',)
+
 
 
 class ProductImage(models.Model): 
