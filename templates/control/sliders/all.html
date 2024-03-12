@@ -63,7 +63,7 @@
                             <tbody>
                                 {% for slider in sliders %}
                                 <tr style="vertical-align: middle; text-align: center;">
-                                    <td>{{ slider.category.title }}</td>
+                                    <td>{{ slider.title }}</td>
                                     <td>{{ slider.subtitle }}</td>
                                     <td><img height="50" width="50"  class="rounded" src="{{slider.image.url}}" alt="img_not_found" style="object-fit: cover;"></td>
                                     <td><a href="{% url 'control_slider_detail' slider.id  %}" class="btn btn-success btn-sm"> O'zgartirish </a></td>

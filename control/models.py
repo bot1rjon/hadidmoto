@@ -68,7 +68,8 @@ class Category(models.Model):
 
 
 class Slider(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=250, default="", blank=True)
     subtitle = models.CharField(max_length=250, default="", blank=True)
     priority = models.IntegerField(default=0)
     content = models.TextField(default="", blank=True)
@@ -83,6 +84,7 @@ class Slider(models.Model):
  
 class SliderCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    title = models.CharField(max_length=250, default="", blank=True)
     subtitle = models.CharField(max_length=250, default="", blank=True)
     image = ResizedImageField(size=[200, 200], quality=100, upload_to="slider/")
 

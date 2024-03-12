@@ -12,10 +12,10 @@
                         {% for slider in sliders %}
                         <div class="item">
                             <div class="info">
-                                <h2 class="title text-main mb-0">{{ slider.category.title }}</h2>
+                                <h2 class="title text-main mb-0">{{ slider.title }}</h2>
                                 <h2 class="title text-dark mb-0">{{ slider.subtitle }}</h2>
                                 <p class="text-dark">{{ slider.content }}</p>
-                                <a href="{% url 'web_category' slider.category.slug %}" class="detail-btn">Katalogni ko’rish</a>
+                                <a href="{% url 'web_products'  %}" class="detail-btn">Katalogni ko’rish</a>
                             </div>
                             <div class="info-img"><img src="{{ slider.image.url }}" class="img-fluid" alt=""></div>
                         </div>
@@ -26,7 +26,7 @@
                         <div class="item-block">
                             <div class="text-block">
                                 <div>
-                                    <h5 class="title text-main mb-0">{{ slider_cat.category.title }}</h5>
+                                    <h5 class="title text-main mb-0">{{ slider_cat.title }}</h5>
                                     <h5 class="title text-dark mb-0">{{ slider_cat.subtitle }}</h5>
                                 </div>
                                 <img src="{{ slider_cat.image.url }}" alt="" class="item-img img-fluid sm-img">

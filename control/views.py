@@ -267,8 +267,7 @@ def control_slider_add(request):
 @login_required(login_url='login')
 def control_slider_create(request):    
     if request.method == "POST" and request.FILES["file"]: 
-        category = get_object_or_404(Category, id=request.POST["category_id"])
-        slider = Slider.objects.create(category=category,subtitle=request.POST["subtitle"],content=request.POST["content"],priority=request.POST["priority"],image=request.FILES["file"])
+        slider = Slider.objects.create(title=request.POST["title"], subtitle=request.POST["subtitle"],content=request.POST["content"],priority=request.POST["priority"],image=request.FILES["file"])
         slider.save()
         return redirect(SECURE_PATH_ADMIN+"sliders/?created")
     else: answer = {"code": 404, "error": "Page Not Found"}; return JsonResponse(answer, safe=False)
@@ -290,8 +289,7 @@ def control_slider_detail(request, id):
 def control_slider_edit(request):    
     if request.method == "POST" or request.FILES["file"]:  
         slider = get_object_or_404(Slider, id=request.POST["slider_id"])
-        category = get_object_or_404(Category, id=request.POST["category_id"])
-        slider.category = category
+        slider.title = request.POST["title"]
         slider.subtitle = request.POST["subtitle"]
         slider.content = request.POST["content"]
         slider.priority = request.POST["priority"]
@@ -347,7 +345,7 @@ def control_slidercategory_add(request):
 def control_slidercategory_create(request):    
     if request.method == "POST" and request.FILES["file"]: 
         category = get_object_or_404(Category, id=request.POST["category_id"])
-        slidercategory = SliderCategory.objects.create(category=category,subtitle=request.POST["subtitle"],image=request.FILES["file"])
+        slidercategory = SliderCategory.objects.create(category=category, title=request.POST["title"], subtitle=request.POST["subtitle"],image=request.FILES["file"])
         slidercategory.save()
         return redirect(SECURE_PATH_ADMIN+"slidercategories/?created")
     else: answer = {"code": 404, "error": "Page Not Found"}; return JsonResponse(answer, safe=False)
@@ -372,6 +370,7 @@ def control_slidercategory_edit(request):
         category = get_object_or_404(Category, id=request.POST["category_id"])
         slidercategory.category = category
         slidercategory.subtitle = request.POST["subtitle"]
+        slidercategory.title = request.POST["title"]
         try: 
             slidercategory.image = request.FILES["file"]
         except:

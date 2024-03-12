@@ -22,15 +22,9 @@
                       </div>
                   </div>
                   <div class="col-md-12">
-                    <label for="validationCustomUsername" class="form-label">Toifasi</label>
-                    <div class="input-group has-validation"> 
-                    <select class="form-select" name="category_id" required aria-label="Default select example" id="validationCustom00">
-                      {% for category in categories %}
-                        <option value="{{category.id}}">{{ category.title }}</option>
-                      {% endfor %}
-                    </select>
-                      <div class="invalid-feedback">Iltimos, Toifa tanlang</div>
-                    </div>
+                    <label for="validationCustom01" class="form-label">Sarlavhasi</label>
+                    <input type="text" name="title" class="form-control" id="validationCustom01" required>
+                    <div class="invalid-feedback">Iltimos, slider sarlavhasini kiriting.</div>
                   </div>
                   <div class="col-md-12">
                     <label for="validationCustom01" class="form-label">Slider Qo'shimcha Sarlavhasi</label>
