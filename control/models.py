@@ -94,11 +94,17 @@ class SliderCategory(models.Model):
 
 
 class PopularCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(max_length=250, default="", blank=True)
+    priority = models.IntegerField(default=0)
     image = ResizedImageField(size=[300, 300], quality=100, upload_to="popular_category/")
 
     def str(self):
         return self.category.title if self.category else "-----"
+
+    class Meta: 
+        ordering = ('-priority',)
+
  
 
 class Product(models.Model):
@@ -168,6 +174,8 @@ class Info(models.Model):
     instagram_link = models.URLField(null=True, blank=True)
     telegram = models.CharField(max_length=255, blank=True, null=True)
     telegram_link = models.URLField(null=True, blank=True)
+    youtube = models.CharField(max_length=255, blank=True, null=True)
+    youtube_link = models.URLField(null=True, blank=True)
     map = models.TextField()
     
     def str(self):

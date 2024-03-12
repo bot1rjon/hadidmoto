@@ -54,18 +54,20 @@
                         <table id="example" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr class="text-center">
+                                    <th>Rasm</th>
                                     <th>Sarlavha</th>
                                     <th>Qo'shimcha Sarlavha</th>
-                                    <th>Rasm</th>
+                                    <th>Prioritet</th>
                                     <th>Batafsil</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for slider in sliders %}
                                 <tr style="vertical-align: middle; text-align: center;">
+                                    <td><img height="50" width="50"  class="rounded" src="{{slider.image.url}}" alt="img_not_found" style="object-fit: cover;"></td>
                                     <td>{{ slider.title }}</td>
                                     <td>{{ slider.subtitle }}</td>
-                                    <td><img height="50" width="50"  class="rounded" src="{{slider.image.url}}" alt="img_not_found" style="object-fit: cover;"></td>
+                                    <td>{{ slider.priority }}</td>
                                     <td><a href="{% url 'control_slider_detail' slider.id  %}" class="btn btn-success btn-sm"> O'zgartirish </a></td>
                                 </tr>
                                 {% endfor %}

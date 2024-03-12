@@ -16,11 +16,11 @@
       <div class="col-lg-7 col-md-6 col-sm-12">
         <div class="card">
           <div class="card-body text-center">
-            <a style="color: #333 !important;" href="{% url 'control_slidercategories_all' %}"><h5 class="card-title">Slayder Toifalar</h5></a>
+            <a style="color: #333 !important;" href="{% url 'control_slidercategories_all' %}"><h5 class="card-title">Slayder Kategoriyalar</h5></a>
             {% if total_slidercategories >= 2 %}
-            <a href="#." style="background-color: #FDB819;" class="btn mt-3">Slider Toifa Mavjud</a>
+            <a href="#." style="background-color: #FDB819;" class="btn mt-3">Slider Kategoriya Mavjud</a>
             {% else %}    
-            <a href="{% url 'control_slidercategory_add' %}" style="background-color: #FDB819;" class="btn mt-3">Slider Toifa Yaratish</a>
+            <a href="{% url 'control_slidercategory_add' %}" style="background-color: #FDB819;" class="btn mt-3">Slider Kategoriya Yaratish</a>
             {% endif %}            
           </div>
         </div>
@@ -29,7 +29,12 @@
         <div class="card">
           <div class="card-body text-center">
             <a style="color: #333 !important;" href="{% url 'control_popularcategories_all' %}"><h5 class="card-title">Ko'p Sotiladigon Mahsulotlar</h5></a>
+            {% if total_popularcategories >= 5 %}
+            <a href="#." style="background-color: #FDB819;" class="btn mt-3">Ko'p Sotiladigon Mahsulot Mavjud</a>
+            {% else %}    
             <a href="{% url 'control_popularcategory_add' %}" style="background-color: #FDB819;" class="btn mt-3">Ko'p Sotiladigon Mahsulot Yaratish</a>
+            {% endif %}   
+
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 {% extends 'control/base.html' %}
 {% load static %}
 
-    {% block page_title %} Slider Toifa Qo'shish {% endblock page_title %}
+    {% block page_title %} Slider Kategoriya Qo'shish {% endblock page_title %}
 
     {% block content %}
     {% if total_slidercategories < 2 %}
@@ -33,14 +33,14 @@
                     <div class="invalid-feedback">Iltimos, qo'shimcha sarlavhasini kiriting.</div>
                   </div>
                   <div class="col-md-12">
-                    <label for="validationCustomUsername" class="form-label">Toifasi</label>
+                    <label for="validationCustomUsername" class="form-label">Kategoriyasi</label>
                     <div class="input-group has-validation"> 
                     <select class="form-select" name="category_id" required aria-label="Default select example" id="validationCustom00">
                       {% for category in categories %}
                         <option value="{{category.id}}">{{ category.title }}</option>
                       {% endfor %}
                     </select>
-                      <div class="invalid-feedback">Iltimos, Toifa tanlang</div>
+                      <div class="invalid-feedback">Iltimos, Kategoriya tanlang</div>
                     </div>
                   </div>
               <div class="col-12">

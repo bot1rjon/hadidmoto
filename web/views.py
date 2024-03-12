@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 
 def base_context(request):
-    categories = Category.objects.filter(available=True, is_active=True)
+    categories = Category.objects.filter(available=True, is_active=True, nav=False)
     info = Info.objects.last()
     nav_categories = Category.objects.filter(available=True, is_active=True, nav=True)[0:2]
     footsliders = FooterSlider.objects.all()
@@ -25,7 +25,7 @@ def base_context(request):
 def web_index(request):
     sliders = Slider.objects.all()
     slider_categories = SliderCategory.objects.filter()[0:2]
-    popular_categories = PopularCategory.objects.filter()[0:6]
+    popular_categories = PopularCategory.objects.filter()[0:5]
     discount = Product.objects.filter(available=True, is_active=True)
     discount_products = []
     for d in discount:

@@ -3,7 +3,7 @@
 
 
 
-    {% block page_title %}Toifa Qo'shish{% endblock page_title %}
+    {% block page_title %}Kategoriya Qo'shish{% endblock page_title %}
     {% block content %}
     <div class="card">
         <div class="card-body">
@@ -11,14 +11,14 @@
             <form class="row g-3 needs-validation" action="{% url 'control_category_create' %}" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
               <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Toifa Sarlavhasi</label>
+                <label for="validationCustom01" class="form-label">Kategoriya Sarlavhasi</label>
                 <input type="text" name="title" class="form-control" id="validationCustom01" required>
                 <div class="invalid-feedback">Iltimos, Sarlavhani kiriting</div>
               </div>
               {% if navactive >= 2 %}
               <div class="form-check-danger form-check form-switch">
                 <input class="form-check-input" type="checkbox" disabled id="flexSwitchCheckCheckedDanger">
-                <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Navigator Uchun Toifa Belgilangan</label>
+                <label class="form-check-label" for="flexSwitchCheckCheckedDanger">Navigator Uchun Kategoriya Belgilangan</label>
               </div>
               {% else %}
               <div class="form-check-danger form-check form-switch">

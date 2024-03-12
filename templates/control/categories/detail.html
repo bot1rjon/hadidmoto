@@ -2,7 +2,7 @@
 {% load static %}
 
 
-    {% block page_title %}Toifani O'zgartirish{% endblock page_title %}
+    {% block page_title %}Kategoriyani O'zgartirish{% endblock page_title %}
 
     {% block add %}
     <div class="ms-auto d-block">
@@ -20,14 +20,14 @@
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ category.id }}">
               <div class="col-md-12">
-                <label for="validationCustom01" class="form-label">Toifa Sarlavhasi</label>
+                <label for="validationCustom01" class="form-label">Kategoriya Sarlavhasi</label>
                 <input type="text" name="title" class="form-control" id="validationCustom01" value="{{ category.title }}" required>
                 <div class="invalid-feedback">Iltimos, Sarlavhani kiriting.</div>
               </div>
               {% if navactive >= 2 and category.nav == False %}
               <div class="form-check-danger form-check form-switch">
                 <input class="form-check-input" type="checkbox" disabled id="flexSwitchCheckCheckedDangerss">
-                <label class="form-check-label" for="flexSwitchCheckCheckedDangerss">Navigator Uchun Toifa Belgilangan</label>
+                <label class="form-check-label" for="flexSwitchCheckCheckedDangerss">Navigator Uchun Kategoriya Belgilangan</label>
               </div>
               {% elif category.nav == True and navactive <= 2 %}
               <div class="form-check-danger form-check form-switch">
@@ -73,7 +73,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body text-danger">
-          <p>Toifani O'chirmoqchisz ishonchingz komilmi !!!</p>
+          <p>Kategoriyani O'chirmoqchisz ishonchingz komilmi !!!</p>
           <input type="checkbox" id="checker1"> <label for="checker1">OK</label>
         </div>
         <div class="modal-footer">

@@ -77,9 +77,9 @@
             <div class="container-fluid">
                 <div class="sell-product-wrapper">
                     <h2 class="title">Ko'p sotiladigon mahsulotlar</h2>
-                    <div class="sell-product-content row">
+                    <div class="sell-product-content">
                         {% for popular_cat in popular_categories %}
-                        <div class="item col-lg-4 col-6">
+                        <div class="item">
                             <a href="{% url 'web_category' popular_cat.category.slug %}" class="bg-item">
                                 <img src="{{ popular_cat.image.url }}" alt="" class="img-fluid">
                                 <h3 class="title">{{ popular_cat.category.title | truncatechars:19 }}</h3>
@@ -87,7 +87,7 @@
                         </div>
                         {% endfor %}
                     </div>
-                    <div class="banner-img"><img src="/assets/images/banner.png" class="img-fluid" alt=""></div>
+                    <div class="banner-img"><img src="{% static 'web/assets/images/banner.png' %}" class="img-fluid" alt=""></div>
                     <div class="nav-discount">
                         <h2 class="title">Chegirmadagi mahsulotlar</h2>
                         <a href="{% url 'web_products_disocunt' %}" class="all-link">Barchasi...</a>

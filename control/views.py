@@ -59,11 +59,13 @@ def control_index(request):
     total_slidercategories = SliderCategory.objects.all().count()
     total_populars = Product.objects.filter(available=True, is_active=True, popular=True).count()
     total_sliders = Slider.objects.all().count()
+    total_popularcategories = PopularCategory.objects.all().count()  
     context = {
         "total_categories": total_categories,
         "total_products": total_products,
         "total_masters": total_masters,
         "total_slidercategories": total_slidercategories,
+        "total_popularcategories": total_popularcategories,
         "total_sliders": total_sliders,
         "total_populars": total_populars,
         "base": base_context(request=request),
@@ -105,6 +107,8 @@ def control_info_edit(request):
             info.telegram_link = request.POST['telegram_link']
             info.instagram = request.POST['instagram']
             info.instagram_link = request.POST['instagram_link']
+            info.youtube = request.POST['youtube']
+            info.youtube_link = request.POST['youtube_link']
             info.map = request.POST['map']
             info.save()
         else:
@@ -122,6 +126,8 @@ def control_info_edit(request):
             telegram_link = request.POST['telegram_link'],
             instagram = request.POST['instagram'],
             instagram_link = request.POST['instagram_link'],
+            youtube = request.POST['youtube'],
+            youtube_link = request.POST['youtube_link'],
             map = request.POST['map']
             )
         return redirect(SECURE_PATH_ADMIN + "info/?edit")
@@ -397,9 +403,11 @@ def control_slidercategory_delete(request):
 def control_popularcategories_all(request):
     popularcategories = PopularCategory.objects.all()
     categories = Category.objects.filter(available=True, is_active=True)
+    total_popularcategories = PopularCategory.objects.all().count() 
     context = {
         "base": base_context(request=request),
-        "popularcategories":popularcategories
+        "popularcategories":popularcategories,
+        "total_popularcategories":total_popularcategories
     }
     return render(request, "control/popularcategories/all.html", context)
     
@@ -407,9 +415,11 @@ def control_popularcategories_all(request):
 @login_required(login_url='login')
 def control_popularcategory_add(request):
     categories = Category.objects.filter(available=True, is_active=True)
+    total_popularcategories = PopularCategory.objects.all().count()  
     context = {
         "base": base_context(request=request),
-        "categories": categories
+        "categories": categories,
+        "total_popularcategories":total_popularcategories
     }
     return render(request, "control/popularcategories/add.html", context)
 
@@ -418,7 +428,7 @@ def control_popularcategory_add(request):
 def control_popularcategory_create(request):    
     if request.method == "POST" and request.FILES["file"]: 
         category = get_object_or_404(Category, id=request.POST["category_id"])
-        popularcategory = PopularCategory.objects.create(category=category,image=request.FILES["file"])
+        popularcategory = PopularCategory.objects.create(category=category, title=request.POST["title"], priority=request.POST["priority"], image=request.FILES["file"])
         popularcategory.save()
         return redirect(SECURE_PATH_ADMIN+"popularcategories/?created")
     else: answer = {"code": 404, "error": "Page Not Found"}; return JsonResponse(answer, safe=False)
@@ -428,10 +438,12 @@ def control_popularcategory_create(request):
 def control_popularcategory_detail(request, id):
     popularcategory = get_object_or_404(PopularCategory, id=id)
     categories = Category.objects.filter(available=True, is_active=True)
+    total_popularcategories = PopularCategory.objects.all().count() 
     context = {
         "base": base_context(request=request),
         "categories": categories,
-        "popularcategory": popularcategory
+        "popularcategory": popularcategory,
+        "total_popularcategories":total_popularcategories
     }
     return render(request, "control/popularcategories/detail.html", context)
 
@@ -442,6 +454,8 @@ def control_popularcategory_edit(request):
         popularcategory = get_object_or_404(PopularCategory, id=request.POST["popularcategory_id"])
         category = get_object_or_404(Category, id=request.POST["category_id"])
         popularcategory.category = category
+        popularcategory.priority = request.POST["priority"]
+        popularcategory.title = request.POST["title"]
         try: 
             popularcategory.image = request.FILES["file"]
         except:
