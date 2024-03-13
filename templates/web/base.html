@@ -133,13 +133,13 @@
                                 {% for nav_cat in base.nav_categories %}
                                     <li><a style="display: block;text-transform: uppercase;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
                                 {% endfor %}
-                                <li><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
-                                <li><a href="{% url 'web_masters' %}">USTALAR</a></li>
+                                <li><a style="display: block;" href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
+                                <li><a style="display: block;" href="{% url 'web_masters' %}">USTALAR</a></li>
                             </ul>
                         </div>
                         <div class="menu-title">
                             {% for nav_cat in base.nav_categories %}
-                                <li class="title"><a style="text-transform: uppercase;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
+                                <li class="title"><a style=" text-transform: uppercase;" href="{% url 'web_category' nav_cat.slug %}">{{ nav_cat.title | truncatechars:20 }}</a></li>
                             {% endfor %}
                             <li class="title"><a href="{% url 'web_products' %}">MAHSULOTLAR</a></li>
                             <li class="title"><a href="{% url 'web_masters' %}">USTALAR</a></li>
@@ -377,7 +377,9 @@
         font-size: 15px;
     }    
     .detail-img-block .shop-details-nav-wrap .nav-tabs {
-        display: flex;
+        display: grid !important;
+        grid-auto-flow: column !important;
+        justify-content: center !important;
     }
     .detail-img-block .shop-details-img-wrap .shop-details-img img {
         height: 285px;
